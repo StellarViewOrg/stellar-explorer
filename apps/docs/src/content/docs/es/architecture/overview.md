@@ -26,7 +26,9 @@ No se requiere un backend personalizado para la funcionalidad básica del explor
 
 ### Servicios de backend (indexador)
 
-Un servicio indexador opcional basado en Go procesa datos del ledger de Stellar en PostgreSQL (con TimescaleDB), Redis y Typesense para consultas avanzadas, búsqueda de texto completo y analíticas. Ver [Indexador](/es/architecture/indexer/) para más detalles.
+Un servicio indexador opcional basado en Go procesa datos del ledger de Stellar en PostgreSQL (con TimescaleDB), Redis y Typesense para consultas avanzadas, búsqueda de texto completo y analíticas. Ver [Indexador](./indexer/) para más detalles.
+
+Stellar Explorer también incluye una interfaz terminal en `apps/tui` y un servicio de datos dedicado en `services/tui-indexer`. Juntos permiten búsqueda de datos Stellar con teclado, monitoreo en vivo, búsqueda indexada, timelines y lecturas con origen visible para flujos terminales.
 
 ## Decisiones de diseño clave
 

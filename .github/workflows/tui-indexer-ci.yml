@@ -1,0 +1,83 @@
+name: TUI Indexer CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "services/tui-indexer/**"
+      - ".github/workflows/tui-indexer-ci.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "services/tui-indexer/**"
+      - ".github/workflows/tui-indexer-ci.yml"
+
+jobs:
+  ci:
+    name: Build, Lint & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/tui-indexer
+
+    services:
+      postgres:
+        image: timescale/timescaledb:latest-pg16
+        env:
+          POSTGRES_DB: stellar_explorer_tui
+          POSTGRES_USER: explorer
+          POSTGRES_PASSWORD: explorer_dev
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    env:
+      TEST_DATABASE_URL: postgresql://explorer:explorer_dev@localhost:5432/stellar_explorer_tui?sslmode=disable
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: services/tui-indexer/go.mod
+          cache-dependency-path: services/tui-indexer/go.sum
+
+      - name: Verify dependencies
+        run: go mod verify
+
+      - name: Check formatting
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "The following files need formatting:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Lint
+        run: go vet ./...
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get install -y --no-install-recommends postgresql-client
+
+      - name: Run migrations
+        run: |
+          psql "$TEST_DATABASE_URL" -c "CREATE EXTENSION IF NOT EXISTS timescaledb;"
+          for f in migrations/*.up.sql; do
+            echo "Applying $f..."
+            psql "$TEST_DATABASE_URL" -f "$f"
+          done
+
+      - name: Test
+        run: make test-all
+        env:
+          GOFLAGS: -race
+
+      - name: Build
+        run: go build -o bin/tui-indexer ./cmd/tui-indexer

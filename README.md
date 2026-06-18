@@ -12,6 +12,8 @@ Stellar Explorer gives you a fast, clean window into the Stellar blockchain. Bro
 
 The app is **live today**, powered entirely by the Stellar Horizon API and Soroban RPC. We're also building a custom **indexer** that will bring historical depth, richer analytics, and a broader data panorama that the Horizon API alone can't provide.
 
+**TUI** brings Stellar Explorer into the terminal as a functional alpha client, offering a keyboard-driven way to investigate Stellar activity, monitor live data, keep local notes/bookmarks/labels, and move through indexed network context with the dedicated `services/tui-indexer` backend.
+
 ---
 
 ## Live App
@@ -126,9 +128,11 @@ WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
 stellar-explorer/
 ├── apps/
 │   ├── explorer-web/ # Next.js explorer frontend
-│   └── docs/        # Astro/Starlight documentation site
+│   ├── docs/         # Astro/Starlight documentation site
+│   └── tui/          # Go terminal client for Stellar investigation
 ├── services/
-│   └── indexer/     # Go ingestion/indexing service
+│   ├── indexer/      # Stable Go ingestion/indexing service
+│   └── tui-indexer/  # Dedicated backend for terminal workflows
 ├── infra/
 │   ├── docker/      # Local infrastructure files
 │   └── docker-compose.yml
@@ -145,6 +149,14 @@ stellar-explorer/
 bun install           # Install workspace dependencies
 bun run dev:web       # Start frontend at http://localhost:3000
 bun run build:web     # Production build for apps/explorer-web
+```
+
+### TUI
+
+```bash
+bun run tui:build     # Build the terminal client
+bun run tui:run       # Run the terminal client
+bun run tui:test      # Run TUI module tests
 ```
 
 ### Indexer
@@ -167,6 +179,16 @@ RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet make -C service
 
 See [`services/indexer/README.md`](./services/indexer/README.md) for the full configuration reference and all available commands.
 
+### TUI Indexer
+
+```bash
+bun run tui-indexer:build
+bun run tui-indexer:test
+bun run tui-indexer:migrate
+```
+
+See [`services/tui-indexer/README.md`](./services/tui-indexer/README.md) for the dedicated backend that enriches `apps/tui` with indexed reads, search, timelines, and live-feed data.
+
 ### Docs
 
 ```bash
@@ -182,10 +204,17 @@ bun run build:docs
 | ---------------- | ------------------------- |
 | `bun run dev:web` | Start frontend development server |
 | `bun run build:web` | Build the frontend |
+| `bun run tui:build` | Build the Go terminal client |
+| `bun run tui:run` | Run the Go terminal client |
+| `bun run tui:test` | Run TUI tests |
 | `bun run dev:docs` | Start the documentation site |
 | `bun run build:docs` | Build the documentation site |
-| `bun run indexer:build` | Build the Go indexer |
-| `bun run indexer:test` | Run indexer tests |
+| `bun run indexer:build` | Build the stable Go indexer |
+| `bun run indexer:test` | Run stable indexer tests |
+| `bun run tui-indexer:build` | Build the dedicated TUI backend |
+| `bun run tui-indexer:test` | Run TUI backend tests |
+| `bun run tui-indexer:run:live` | Run the TUI backend in live mode |
+| `bun run tui-indexer:infra:up` | Start isolated Docker services for `tui-indexer` |
 
 ## Vercel
 

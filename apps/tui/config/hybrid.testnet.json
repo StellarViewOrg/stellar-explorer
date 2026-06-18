@@ -1,0 +1,17 @@
+{
+  "product_name": "stellar-tui",
+  "default_profile": "testnet-hybrid",
+  "cache": {
+    "driver": "sqlite"
+  },
+  "profiles": [
+    {
+      "name": "testnet-hybrid",
+      "network": "testnet",
+      "rpc_endpoint": "https://soroban-testnet.stellar.org",
+      "indexer_url": "http://127.0.0.1:8081",
+      "redis_url": "redis://127.0.0.1:63890",
+      "backend_mode": "hybrid"
+    }
+  ]
+}

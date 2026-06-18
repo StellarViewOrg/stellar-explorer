@@ -23,7 +23,9 @@ All pages are server-side rendered on first load and then hydrated for client-si
 
 The Go-based indexer service processes Stellar ledger data into PostgreSQL (with TimescaleDB), Redis, and Typesense. This architecture enables advanced queries, full-text search, and analytics that are not possible with Horizon alone.
 
-See the [Indexer Pipeline](/architecture/indexer/) for detailed implementation.
+See the [Indexer Pipeline](./indexer/) for detailed implementation.
+
+Stellar Explorer also includes a terminal interface in `apps/tui` and a dedicated data service in `services/tui-indexer`. Together they provide keyboard-driven Stellar lookup, live monitoring, search, timelines, and source-aware reads for terminal workflows. See [TUI Architecture](./tui/).
 
 ### Stellar Network
 

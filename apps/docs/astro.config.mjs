@@ -2,8 +2,13 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import rehypeExternalLinks from "rehype-external-links";
 
+const site = "https://docs.stellar-explorer.acachete.xyz";
+const base = "/";
+const githubUrl = "https://github.com/salazarsebas/stellar-explorer";
+
 export default defineConfig({
-  site: "https://docs.stellar-explorer.acachete.xyz",
+  site,
+  base,
   markdown: {
     rehypePlugins: [
       [
@@ -17,6 +22,7 @@ export default defineConfig({
       title: "Stellar Explorer",
       favicon: "/favicon.png",
       customCss: ["./src/styles/custom.css"],
+      disable404Route: true,
       defaultLocale: "root",
       locales: {
         root: { label: "English", lang: "en" },
@@ -26,7 +32,7 @@ export default defineConfig({
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/salazarsebas/stellar-explorer",
+          href: githubUrl,
         },
       ],
       sidebar: [
@@ -53,6 +59,9 @@ export default defineConfig({
             { slug: "architecture/routing" },
             { slug: "architecture/providers" },
             { slug: "architecture/indexer" },
+            { slug: "architecture/tui" },
+            { slug: "architecture/tui-product-roadmap" },
+            { slug: "architecture/tui-technical-roadmap" },
           ],
         },
         {
