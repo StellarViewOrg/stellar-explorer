@@ -9,9 +9,11 @@ description: Descripción general de la organización del código.
 stellar-explorer/
 ├── apps/
 │   ├── explorer-web/ # Frontend Next.js del explorador
-│   └── docs/         # Sitio de documentación Astro/Starlight
+│   ├── docs/         # Sitio de documentación Astro/Starlight
+│   └── tui/          # Interfaz terminal de Stellar Explorer
 ├── services/
-│   └── indexer/      # Servicio Go de ingestión de datos
+│   ├── indexer/      # Servicio Go estable de ingestión de datos
+│   └── tui-indexer/  # Backend dedicado para flujos terminales
 ├── infra/
 │   ├── docker/       # Configuración Docker
 │   └── docker-compose.yml
@@ -60,3 +62,25 @@ apps/explorer-web/src/
 - **Estilos:** Tailwind CSS 4
 - **Gráficos:** Recharts
 - **Alias de ruta:** `@/` apunta a `apps/explorer-web/src/`
+
+## Producto terminal (`apps/tui/`)
+
+`apps/tui` es la interfaz terminal de Stellar Explorer. Permite buscar y recorrer datos de Stellar con teclado, monitorear actividad en vivo, navegar entidades relacionadas, guardar contexto local y ver con claridad si cada resultado proviene de Stellar RPC o del backend dedicado del TUI.
+
+### Tiers de tests del TUI
+
+| Comando | Alcance | Requisitos |
+|---|---|---|
+| `bun run tui:test` | Suite completa del TUI (unit + integración) | Solo toolchain de Go |
+| `bun run tui:test:unit` | Solo tests unitarios y de fixtures de render | Solo toolchain de Go |
+| `bun run tui:test:integration` | Solo cadenas de confiabilidad (build tag `integration`) | Solo toolchain de Go |
+| `bun run tui-indexer:test` | Handlers de read API y tests de store del indexer | Toolchain de Go; PostgreSQL para tests de integración del store |
+
+Workflows de CI:
+
+- `.github/workflows/tui-ci.yml` — build, lint, tests unitarios e integración de `apps/tui`
+- `.github/workflows/tui-indexer-ci.yml` — build, lint, migraciones y tests de `services/tui-indexer`
+
+## Backend de TUI (`services/tui-indexer/`)
+
+`services/tui-indexer` prepara datos indexados de Stellar Explorer para flujos terminales. Expone APIs de lectura, búsqueda, timelines, registros relacionados y datos de actividad en vivo que enriquecen la experiencia del TUI más allá de consultas directas a Stellar RPC.

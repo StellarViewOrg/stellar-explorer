@@ -32,6 +32,25 @@ bun run dev
 
 The explorer will be available at `http://localhost:3000`.
 
+## Terminal Product
+
+Stellar Explorer includes a Go-based terminal interface for keyboard-driven Stellar lookup and monitoring:
+
+```bash
+bun run tui:build
+bun run tui:run
+bun run tui:test
+```
+
+For hybrid mode with indexed reads:
+
+```bash
+bun run tui-indexer:infra:up
+bun run tui-indexer:migrate
+bun run tui-indexer:run:serve
+bun run tui:run:hybrid
+```
+
 ## Backend Services (Optional)
 
 For indexer functionality, start the Docker services:
@@ -41,6 +60,12 @@ docker compose -f infra/docker-compose.yml up -d
 ```
 
 This starts PostgreSQL (port 54320), Redis (port 63790), and Typesense (port 18108).
+
+For the dedicated TUI backend infrastructure, use:
+
+```bash
+bun run tui-indexer:infra:up
+```
 
 ## Environment Variables
 
@@ -60,3 +85,11 @@ cp .env.local.example .env.local
 | `bun run format` | Format code with Prettier |
 | `bun run test` | Run tests |
 | `bun run test:watch` | Run tests in watch mode |
+| `bun run tui:build` | Build the TUI |
+| `bun run tui:test` | Run full TUI test suite (unit + integration) |
+| `bun run tui:test:unit` | Run fast TUI unit and fixture tests only |
+| `bun run tui:test:integration` | Run TUI integration reliability tests only |
+| `bun run tui-indexer:build` | Build the TUI backend |
+| `bun run tui-indexer:test` | Run local-safe TUI indexer tests (no Docker required) |
+| `bun run tui-indexer:test:all` | Run full TUI indexer suite (requires local Postgres) |
+| `bun run tui-indexer:infra:up` | Start local infrastructure for `tui-indexer` |

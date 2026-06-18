@@ -9,9 +9,11 @@ description: Overview of the codebase organization.
 stellar-explorer/
 ├── apps/
 │   ├── explorer-web/ # Next.js explorer frontend
-│   └── docs/         # Astro/Starlight documentation site
+│   ├── docs/         # Astro/Starlight documentation site
+│   └── tui/          # Stellar Explorer terminal interface
 ├── services/
-│   └── indexer/      # Go data ingestion service
+│   ├── indexer/      # Stable Go data ingestion service
+│   └── tui-indexer/  # Dedicated backend for terminal workflows
 ├── infra/
 │   ├── docker/       # Docker configuration
 │   └── docker-compose.yml
@@ -60,3 +62,34 @@ apps/explorer-web/src/
 - **Styling:** Tailwind CSS 4
 - **Charts:** Recharts
 - **Path alias:** `@/` maps to `apps/explorer-web/src/`
+
+## Terminal Product (`apps/tui/`)
+
+`apps/tui` is the Go-based terminal interface for Stellar Explorer. It supports keyboard-driven lookup, live monitoring, related-entity traversal, local metadata, and source-aware reads through Stellar RPC or the dedicated TUI backend.
+
+```
+apps/tui/
+├── cmd/tui/          # CLI entrypoint
+├── internal/app/     # Application orchestration
+├── internal/config/  # Local config/profile loading
+├── internal/ui/      # Terminal view layer
+└── internal/cache/   # Local SQLite/cache integration
+```
+
+### TUI Test Tiers
+
+| Command | Scope | Prerequisites |
+|---|---|---|
+| `bun run tui:test` | Full TUI suite (unit + integration) | Go toolchain only |
+| `bun run tui:test:unit` | Unit and fixture rendering tests only | Go toolchain only |
+| `bun run tui:test:integration` | Reliability chains only (`integration` build tag) | Go toolchain only |
+| `bun run tui-indexer:test` | Indexer read API handlers and store tests | Go toolchain; PostgreSQL for store integration tests |
+
+CI workflows:
+
+- `.github/workflows/tui-ci.yml` — `apps/tui` build, lint, unit, and integration tests
+- `.github/workflows/tui-indexer-ci.yml` — `services/tui-indexer` build, lint, migrations, and tests
+
+## TUI Backend (`services/tui-indexer/`)
+
+`services/tui-indexer` prepares indexed Stellar Explorer data for terminal workflows. It provides read APIs, search, timelines, related records, and live feed data that enrich the terminal experience beyond direct RPC lookups.
