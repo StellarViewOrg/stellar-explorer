@@ -12,7 +12,7 @@ Go service that ingests Stellar network data (ledgers, transactions, operations)
 docker compose -f infra/docker-compose.yml up -d
 ```
 
-This starts PostgreSQL+TimescaleDB (port 54320), Redis (port 63790), and Typesense (port 18108).
+This starts PostgreSQL+TimescaleDB (port 54320), Redis (port 63790), and Typesense (port 18108). Typesense is used for full-text search indexing of accounts, assets, and contracts — it is optional for basic ingestion but required for the search API surface.
 
 - Database migrations applied:
 
