@@ -160,9 +160,9 @@ Each cell describes what is available today. `-` means unavailable in that mode.
 | Live feed (poll) | yes | yes |
 | Live feed (stream) | - | yes (Redis) |
 | Live feed filters (contract/asset/operation) | - | yes (stream + poll) |
-| Local labels / bookmarks / notes | yes | yes | yes |
-| Cache-first entity revisit | yes | yes | yes |
-| Visited entity cache fallback | yes | yes | yes |
+| Local labels / bookmarks / notes | yes | yes |
+| Cache-first entity revisit | yes | yes |
+| Visited entity cache fallback | yes | yes |
 
 ## Why It Matters
 
