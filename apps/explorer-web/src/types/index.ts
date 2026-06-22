@@ -1,7 +1,7 @@
 export * from "./stellar";
 
 // Network types
-export type NetworkKey = "public" | "testnet" | "futurenet";
+export type NetworkKey = "mainnet" | "testnet" | "futurenet";
 
 export interface NetworkConfig {
   name: string;
