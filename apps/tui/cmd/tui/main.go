@@ -1495,13 +1495,29 @@ func holderTimelineItem(holder backendclient.AssetHolderSummary, order int) time
 	}
 }
 
+func eventTypeLabel(event backendclient.ContractEventSummary) string {
+	if strings.TrimSpace(event.EventName) != "" {
+		return event.EventName
+	}
+	switch event.Type {
+	case 0:
+		return "system"
+	case 1:
+		return "contract"
+	case 2:
+		return "diagnostic"
+	default:
+		return fmt.Sprintf("type-%d", event.Type)
+	}
+}
+
 func eventTimelineItem(event backendclient.ContractEventSummary, order int) timelineItem {
 	return timelineItem{
 		when:  event.CreatedAt,
 		order: order,
 		result: app.SearchResult{
 			Kind:        "event",
-			Title:       fmt.Sprintf("Event type %d", event.Type),
+			Title:       "Event " + eventTypeLabel(event),
 			Description: fmt.Sprintf("ledger %d  tx %s  %s", event.LedgerSequence, truncateCommandLabel(event.TransactionHash, 16), formatTimelineTime(event.CreatedAt)),
 			Command:     "lookup tx " + event.TransactionHash,
 			Enabled:     true,
