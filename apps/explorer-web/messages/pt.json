@@ -452,6 +452,7 @@
     "opsPerLedger": "Operações por Ledger",
     "avgOps": "Média {count} ops/ledger",
     "operationsLabel": "Operações",
+    "ledgerLabel": "Livro",
     "transactionsLabel": "Transações",
     "successful": "Bem-sucedidas",
     "total": "Total",

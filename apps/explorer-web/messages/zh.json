@@ -452,6 +452,7 @@
     "opsPerLedger": "每账本操作数",
     "avgOps": "平均 {count} 操作/账本",
     "operationsLabel": "操作",
+    "ledgerLabel": "账本",
     "transactionsLabel": "交易",
     "successful": "成功",
     "total": "总计",

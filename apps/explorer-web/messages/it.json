@@ -452,6 +452,7 @@
     "opsPerLedger": "Operazioni per Registro",
     "avgOps": "Media {count} ops/registro",
     "operationsLabel": "Operazioni",
+    "ledgerLabel": "Registro",
     "transactionsLabel": "Transazioni",
     "successful": "Riuscite",
     "total": "Totale",

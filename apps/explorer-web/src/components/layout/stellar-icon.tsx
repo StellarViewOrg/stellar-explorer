@@ -32,8 +32,8 @@ export function StellarLogo({ className }: { className?: string }) {
     >
       <defs>
         <linearGradient id="stellar-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(var(--primary))" />
-          <stop offset="100%" stopColor="hsl(var(--chart-1))" />
+          <stop offset="0%" stopColor="var(--primary)" />
+          <stop offset="100%" stopColor="var(--chart-1)" />
         </linearGradient>
       </defs>
       <circle cx="50" cy="50" r="48" fill="url(#stellar-gradient)" />

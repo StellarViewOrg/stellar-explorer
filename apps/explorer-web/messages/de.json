@@ -452,6 +452,7 @@
     "opsPerLedger": "Operationen pro Ledger",
     "avgOps": "Durchschn. {count} Ops/Ledger",
     "operationsLabel": "Operationen",
+    "ledgerLabel": "Ledger",
     "transactionsLabel": "Transaktionen",
     "successful": "Erfolgreich",
     "total": "Gesamt",

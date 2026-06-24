@@ -452,6 +452,7 @@
     "opsPerLedger": "Operaciones por Registro",
     "avgOps": "Promedio {count} ops/registro",
     "operationsLabel": "Operaciones",
+    "ledgerLabel": "Libro",
     "transactionsLabel": "Transacciones",
     "successful": "Exitosas",
     "total": "Total",

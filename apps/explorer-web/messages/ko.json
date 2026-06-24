@@ -452,6 +452,7 @@
     "opsPerLedger": "원장당 작업 수",
     "avgOps": "평균 {count} 작업/원장",
     "operationsLabel": "작업",
+    "ledgerLabel": "원장",
     "transactionsLabel": "트랜잭션",
     "successful": "성공",
     "total": "전체",

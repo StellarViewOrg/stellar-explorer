@@ -3,10 +3,27 @@
 import type { ReactNode } from "react";
 import { QueryProvider } from "./query-provider";
 import { NetworkProvider } from "./network-provider";
-import { ThemeProvider } from "./theme-provider";
+import { ThemeProvider, useTheme } from "./theme-provider";
 import { DeveloperModeProvider } from "./developer-mode-provider";
 import { AnalyticsModeProvider } from "./analytics-mode-provider";
 import { Toaster } from "sonner";
+
+function ThemedToaster() {
+  const { resolvedTheme } = useTheme();
+  return (
+    <Toaster
+      position="bottom-right"
+      theme={resolvedTheme}
+      toastOptions={{
+        style: {
+          background: "var(--card)",
+          border: "1px solid var(--border)",
+          color: "var(--foreground)",
+        },
+      }}
+    />
+  );
+}
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -16,17 +33,7 @@ export function Providers({ children }: { children: ReactNode }) {
           <DeveloperModeProvider>
             <AnalyticsModeProvider>
               {children}
-              <Toaster
-                position="bottom-right"
-                theme="dark"
-                toastOptions={{
-                  style: {
-                    background: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    color: "hsl(var(--foreground))",
-                  },
-                }}
-              />
+              <ThemedToaster />
             </AnalyticsModeProvider>
           </DeveloperModeProvider>
         </NetworkProvider>
