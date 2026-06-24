@@ -452,6 +452,7 @@
     "opsPerLedger": "レジャーあたりの操作数",
     "avgOps": "平均 {count} 操作/レジャー",
     "operationsLabel": "操作",
+    "ledgerLabel": "レジャー",
     "transactionsLabel": "トランザクション",
     "successful": "成功",
     "total": "合計",

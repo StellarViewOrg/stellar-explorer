@@ -452,6 +452,7 @@
     "opsPerLedger": "Opérations par Registre",
     "avgOps": "Moy. {count} ops/registre",
     "operationsLabel": "Opérations",
+    "ledgerLabel": "Registre",
     "transactionsLabel": "Transactions",
     "successful": "Réussies",
     "total": "Total",

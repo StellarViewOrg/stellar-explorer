@@ -5,13 +5,36 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { ChartWrapper } from "./chart-wrapper";
 import { useOpsPerLedgerChartData } from "@/lib/hooks/use-chart-data";
 import { useTranslations } from "next-intl";
-import {
-  chartColors,
-  chartConfig,
-  chartAxisStyle,
-  chartGridStyle,
-  chartTooltipStyle,
-} from "./chart-config";
+import { chartColors, chartConfig, chartAxisStyle, chartGridStyle } from "./chart-config";
+
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number; payload: { ledger: number } }>;
+  ledgerLabel?: string;
+  operationsLabel?: string;
+}
+
+function CustomTooltip({
+  active,
+  payload,
+  ledgerLabel = "Ledger",
+  operationsLabel = "Operations",
+}: TooltipProps) {
+  if (!active || !payload?.length) return null;
+
+  const { ledger } = payload[0].payload;
+
+  return (
+    <div className="bg-popover border-border rounded-lg border px-3 py-2 shadow-lg">
+      <p className="text-foreground text-sm font-medium">
+        {ledgerLabel} #{Number(ledger).toLocaleString()}
+      </p>
+      <p className="text-muted-foreground text-xs">
+        {operationsLabel}: {Number(payload[0].value).toLocaleString()}
+      </p>
+    </div>
+  );
+}
 
 export default function OperationsChart() {
   const { data, avgOps, isLoading } = useOpsPerLedgerChartData();
@@ -41,12 +64,13 @@ export default function OperationsChart() {
             />
             <YAxis {...chartAxisStyle} />
             <Tooltip
-              contentStyle={chartTooltipStyle}
-              labelFormatter={(v) => `Ledger #${Number(v).toLocaleString()}`}
-              formatter={(value, name) => [
-                Number(value).toLocaleString(),
-                name === "ops" ? t("operationsLabel") : t("transactionsLabel"),
-              ]}
+              cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+              content={
+                <CustomTooltip
+                  ledgerLabel={t("ledgerLabel")}
+                  operationsLabel={t("operationsLabel")}
+                />
+              }
             />
             <Bar dataKey="ops" fill={chartColors.primary} radius={[4, 4, 0, 0]} opacity={0.85} />
           </BarChart>
