@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { TimeAgo } from "@/components/common/time-ago";
@@ -14,7 +15,7 @@ interface LedgerCardProps {
   className?: string;
 }
 
-export function LedgerCard({ ledger, className }: LedgerCardProps) {
+export const LedgerCard = memo(function LedgerCard({ ledger, className }: LedgerCardProps) {
   const t = useTranslations("cards.ledger");
 
   return (
@@ -46,7 +47,7 @@ export function LedgerCard({ ledger, className }: LedgerCardProps) {
       </Card>
     </Link>
   );
-}
+});
 
 export function LedgerCardSkeleton({ className }: { className?: string }) {
   return (

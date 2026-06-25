@@ -11,13 +11,13 @@ interface NetworkBadgeProps {
 }
 
 const networkStyles: Record<NetworkKey, string> = {
-  public: "bg-success/15 text-success border-success/25",
+  mainnet: "bg-success/15 text-success border-success/25",
   testnet: "bg-warning/15 text-warning border-warning/25",
   futurenet: "bg-primary/15 text-primary border-primary/25",
 };
 
 const networkLabelKeys: Record<NetworkKey, "mainnet" | "testnet" | "futurenet"> = {
-  public: "mainnet",
+  mainnet: "mainnet",
   testnet: "testnet",
   futurenet: "futurenet",
 };

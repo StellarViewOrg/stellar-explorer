@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,7 +15,7 @@ interface AssetCardProps {
   className?: string;
 }
 
-export function AssetCard({ asset, className }: AssetCardProps) {
+export const AssetCard = memo(function AssetCard({ asset, className }: AssetCardProps) {
   const t = useTranslations("cards.asset");
   const assetPath = `/asset/${asset.asset_code}-${asset.asset_issuer}`;
 
@@ -55,7 +56,7 @@ export function AssetCard({ asset, className }: AssetCardProps) {
       </Card>
     </Link>
   );
-}
+});
 
 export function AssetCardSkeleton({ className }: { className?: string }) {
   return (

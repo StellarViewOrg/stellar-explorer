@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { HashDisplay } from "@/components/common/hash-display";
@@ -18,15 +18,18 @@ interface TransactionCardProps {
   animationDelay?: number;
 }
 
-export function TransactionCard({ transaction, className, animationDelay }: TransactionCardProps) {
+export const TransactionCard = memo(function TransactionCard({
+  transaction,
+  className,
+  animationDelay,
+}: TransactionCardProps) {
   const isSuccess = transaction.successful;
   const t = useTranslations("cards.transaction");
   const tOps = useTranslations("operations");
   const { network } = useNetwork();
 
   const decoded = useMemo(() => {
-    const envelopeXdr = (transaction as unknown as { envelope_xdr: string }).envelope_xdr;
-    return decodeTransactionEnvelope(envelopeXdr, network);
+    return decodeTransactionEnvelope(transaction.envelope_xdr, network);
   }, [transaction, network]);
 
   const operationLabel = useMemo(() => {
@@ -115,7 +118,7 @@ export function TransactionCard({ transaction, className, animationDelay }: Tran
                   startLength={6}
                   endLength={4}
                   copyable={false}
-                  className="font-mono text-xs opacity-60"
+                  className="font-mono text-xs"
                 />
                 <span className="opacity-30">|</span>
                 <span>
@@ -142,7 +145,7 @@ export function TransactionCard({ transaction, className, animationDelay }: Tran
       </Card>
     </Link>
   );
-}
+});
 
 interface TransactionCardSkeletonProps {
   className?: string;

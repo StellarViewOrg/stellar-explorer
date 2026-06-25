@@ -8,7 +8,7 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-card border shadow-sm",
+        default: "bg-card border shadow-sm dark:shadow-none",
         elevated: "card-elevated border-0",
         glass: "card-glass",
         gradient: "gradient-border bg-card/80 border-0",

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { HashDisplay } from "@/components/common/hash-display";
@@ -13,7 +14,11 @@ interface AccountCardProps {
   className?: string;
 }
 
-export function AccountCard({ accountId, balance, className }: AccountCardProps) {
+export const AccountCard = memo(function AccountCard({
+  accountId,
+  balance,
+  className,
+}: AccountCardProps) {
   return (
     <Link href={`/account/${accountId}`}>
       <Card variant="elevated" interactive className={cn("group border-0 py-0", className)}>
@@ -41,7 +46,7 @@ export function AccountCard({ accountId, balance, className }: AccountCardProps)
       </Card>
     </Link>
   );
-}
+});
 
 export function AccountCardSkeleton({ className }: { className?: string }) {
   return (
