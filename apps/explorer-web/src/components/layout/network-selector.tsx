@@ -14,13 +14,13 @@ import type { NetworkKey } from "@/types";
 import { cn } from "@/lib/utils";
 
 const networkIcons: Record<NetworkKey, typeof Globe> = {
-  public: Globe,
+  mainnet: Globe,
   testnet: TestTube,
   futurenet: Rocket,
 };
 
 const networkColors: Record<NetworkKey, string> = {
-  public: "text-success",
+  mainnet: "text-success",
   testnet: "text-warning",
   futurenet: "text-primary",
 };
@@ -32,7 +32,7 @@ export function NetworkSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
+        <Button variant="outline" size="sm" className="min-w-[148px] gap-2">
           <Icon className={cn("size-4", networkColors[network])} />
           <span className="hidden sm:inline">{NETWORKS[network].name}</span>
           <ChevronDown className="size-3 opacity-50" />
