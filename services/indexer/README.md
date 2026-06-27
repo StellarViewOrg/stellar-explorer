@@ -28,16 +28,17 @@ make build
 | -------------- | ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------- |
 | `RPC_ENDPOINT` | —                                                                                     | **Yes**  | Stellar RPC endpoint                                      |
 | `NETWORK`      | `public`                                                                              | No       | `public`, `testnet`, or `futurenet`                       |
-| `DATABASE_URL` | `postgresql://explorer:explorer_dev@localhost:54320/stellar_explorer?sslmode=disable` | No       | PostgreSQL connection                                     |
+| `DATABASE_URL` | `postgresql://explorer:explorer_dev@localhost:54320/stellar_explorer?sslmode=disable` | No       | PostgreSQL connection. Change `sslmode=disable` to `sslmode=require` in production. |
 | `REDIS_URL`    | `redis://localhost:63790`                                                             | No       | Redis connection (optional — logs warning if unavailable) |
 | `BATCH_SIZE`   | `100`                                                                                 | No       | Ledgers per batch                                         |
-| `WORKER_COUNT` | `8`                                                                                   | No       | Parallel workers for backfill                             |
+| `WORKER_COUNT` | `8`                                                                                   | No       | Parallel workers for `backfill` and `s3backfill`          |
 
 ## Commands
 
 ```bash
 make build          # Compile to bin/indexer
 make migrate        # Apply pending database migrations
+make run-live       # Live ingestion (requires RPC_ENDPOINT env var)
 make test           # Run all tests
 make fmt            # Format code
 make lint           # Run go vet
