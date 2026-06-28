@@ -168,7 +168,9 @@ func run(args []string, stdin *os.File, stdout, stderr *os.File) int {
 		}
 	}
 
-	refreshCurrentScreen(context.Background(), cfg, model, startup.store)
+	if command == "" {
+		refreshCurrentScreen(context.Background(), cfg, model, startup.store)
+	}
 	if err := persistSessionState(startup.store, model.Snapshot().Current); err != nil {
 		fmt.Fprintf(stderr, "persist session: %v\n", err)
 		return 1

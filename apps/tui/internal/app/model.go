@@ -1345,7 +1345,7 @@ func (m *Model) SetCommandPaletteResults(results []SearchResult) {
 	}
 	m.command.Results = results
 	if m.command.SelectedIndex >= len(m.command.Results) {
-		m.command.SelectedIndex = clampLiveFeedIndex(len(m.command.Results)-1, len(m.command.Results))
+		m.command.SelectedIndex = clampIndex(len(m.command.Results)-1, len(m.command.Results))
 	}
 }
 
@@ -1399,7 +1399,7 @@ func (m *Model) MoveCommandPaletteSelection(delta int) {
 	if !m.command.Visible || len(m.command.Results) == 0 || delta == 0 {
 		return
 	}
-	m.command.SelectedIndex = clampLiveFeedIndex(m.command.SelectedIndex+delta, len(m.command.Results))
+	m.command.SelectedIndex = clampIndex(m.command.SelectedIndex+delta, len(m.command.Results))
 }
 
 // SelectedCommandPaletteResult returns the highlighted inferred search result.
@@ -1458,7 +1458,7 @@ func (m *Model) MergeCommandPaletteBackendResults(results []backendclient.Search
 
 	m.command.Results = RankSearchResults(m.command.Input, merged)
 	if m.command.SelectedIndex >= len(m.command.Results) {
-		m.command.SelectedIndex = clampLiveFeedIndex(len(m.command.Results)-1, len(m.command.Results))
+		m.command.SelectedIndex = clampIndex(len(m.command.Results)-1, len(m.command.Results))
 	}
 }
 
@@ -1489,7 +1489,7 @@ func (m *Model) MergeCommandPaletteLocalResults(results []SearchResult) {
 
 	m.command.Results = RankSearchResults(m.command.Input, merged)
 	if m.command.SelectedIndex >= len(m.command.Results) {
-		m.command.SelectedIndex = clampLiveFeedIndex(len(m.command.Results)-1, len(m.command.Results))
+		m.command.SelectedIndex = clampIndex(len(m.command.Results)-1, len(m.command.Results))
 	}
 }
 
@@ -1520,7 +1520,7 @@ func (m *Model) SetErrorStatus(message string) {
 func (m *Model) refreshCommandPaletteResults() {
 	m.command.Results = inferSearchResults(m.command.Input)
 	if m.command.SelectedIndex >= len(m.command.Results) {
-		m.command.SelectedIndex = clampLiveFeedIndex(len(m.command.Results)-1, len(m.command.Results))
+		m.command.SelectedIndex = clampIndex(len(m.command.Results)-1, len(m.command.Results))
 	}
 }
 
@@ -1558,7 +1558,7 @@ func (m *Model) MoveSelection(delta int) {
 		return
 	}
 
-	m.selection.LiveFeedIndex = clampLiveFeedIndex(m.selection.LiveFeedIndex+delta, len(m.liveFeed.RecentTransactions))
+	m.selection.LiveFeedIndex = clampIndex(m.selection.LiveFeedIndex+delta, len(m.liveFeed.RecentTransactions))
 	selected := m.liveFeed.RecentTransactions[m.selection.LiveFeedIndex]
 	m.status = Status{
 		Level:   StatusInfo,
@@ -1663,7 +1663,7 @@ func (m *Model) HandleCommand(input string) bool {
 	return true
 }
 
-func clampLiveFeedIndex(value, count int) int {
+func clampIndex(value, count int) int {
 	if count <= 0 {
 		return 0
 	}
