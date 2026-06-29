@@ -32,6 +32,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "metadata" });
 
   const title = t("title");
+  const brand = t("brand");
   const description = t("description");
 
   return {
@@ -40,20 +41,28 @@ export async function generateMetadata({
     ),
     title: {
       default: title,
-      template: `%s | ${title}`,
+      template: `%s | ${brand}`,
     },
     description: description,
     keywords: [
+      "Stellar Explorer",
+      "Stellar View",
       "Stellar",
-      "blockchain",
-      "explorer",
+      "blockchain explorer",
+      "block explorer",
       "XLM",
-      "Soroban",
-      "crypto",
       "Lumens",
+      "Soroban",
+      "Soroban smart contracts",
       "Stellar Network",
+      "Stellar blockchain",
+      "Stellar transactions",
+      "Stellar mainnet",
+      "Stellar testnet",
+      "crypto explorer",
+      "DeFi",
     ],
-    authors: [{ name: "Stellar Explorer" }],
+    authors: [{ name: "Stellar View" }],
     icons: {
       icon: "/stellar-explorer.png",
       apple: "/stellar-explorer.png",
