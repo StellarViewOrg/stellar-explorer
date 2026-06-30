@@ -1,312 +1,26 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import { Link } from "@/i18n/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { PageHeader } from "@/components/layout/page-header";
-import { StatusBadge } from "@/components/common/status-badge";
-import { HashDisplay } from "@/components/common/hash-display";
-import { OperationBadge } from "@/components/common/operation-badge";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
+import { CrossNetworkBanner } from "@/components/common/cross-network-banner";
 import { DeveloperPanel } from "@/components/common/developer-panel";
-import { useTransaction, useTransactionOperations, useTransactionEffects } from "@/lib/hooks";
+import { StatusBadge } from "@/components/common/status-badge";
+import { Breadcrumbs } from "@/components/common/breadcrumbs";
+import { useTransaction } from "@/lib/hooks";
 import { useNetwork } from "@/lib/providers";
 import { NETWORKS } from "@/lib/constants";
-import {
-  formatDateTime,
-  formatLedgerSequence,
-  stroopsToXLM,
-  formatNumber,
-  truncateHash,
-} from "@/lib/utils";
-import type { Horizon } from "@stellar/stellar-sdk";
-import { Breadcrumbs } from "@/components/common/breadcrumbs";
-import { OperationDetails } from "@/components/operations/operation-details";
-import { OperationSummary } from "@/components/operations/operation-summary";
+import { truncateHash } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { TransactionSummary } from "./sections/transaction-summary";
+import { OperationsTimeline } from "./sections/operations-timeline";
+import { TransactionEffects } from "./sections/transaction-effects";
+import { RawData } from "./sections/raw-data";
 
 interface TransactionContentProps {
   hash: string;
-}
-
-function TransactionSummary({ transaction }: { transaction: Horizon.ServerApi.TransactionRecord }) {
-  const t = useTranslations("transaction");
-
-  return (
-    <Card variant="elevated" className="animate-fade-in-up border-0">
-      <CardHeader>
-        <CardTitle className="text-base">{t("details")}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("status")}</span>
-              <StatusBadge status={transaction.successful ? "success" : "failed"} />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("ledger")}</span>
-              <Link
-                href={`/ledger/${transaction.ledger_attr}`}
-                className="text-primary text-sm font-medium hover:underline"
-              >
-                #{formatLedgerSequence(transaction.ledger_attr)}
-              </Link>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("timestamp")}</span>
-              <span className="text-sm">{formatDateTime(transaction.created_at)}</span>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("operationsCount")}</span>
-              <span className="text-sm font-medium">{transaction.operation_count}</span>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("feePaid")}</span>
-              <span className="font-mono text-sm">{stroopsToXLM(transaction.fee_charged)} XLM</span>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("maxFee")}</span>
-              <span className="font-mono text-sm">{stroopsToXLM(transaction.max_fee)} XLM</span>
-            </div>
-            <Separator />
-            <div className="flex items-start justify-between">
-              <span className="text-muted-foreground text-sm">{t("source")}</span>
-              <HashDisplay
-                hash={transaction.source_account}
-                truncate
-                linkTo={`/account/${transaction.source_account}`}
-                className="text-sm"
-              />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("memo")}</span>
-              <span className="font-mono text-sm">{transaction.memo || "-"}</span>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function OperationsTimeline({ hash }: { hash: string }) {
-  const { data, isLoading, error, refetch } = useTransactionOperations(hash);
-  const t = useTranslations("transaction");
-
-  if (isLoading) {
-    return <LoadingCard rows={5} />;
-  }
-
-  if (error) {
-    return <ErrorState title={t("failedToLoadOps")} message={error.message} onRetry={refetch} />;
-  }
-
-  if (!data?.records?.length) {
-    return (
-      <Card>
-        <CardContent className="text-muted-foreground py-8 text-center">
-          {t("noOperations")}
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">
-          {t("operations")} ({data.records.length})
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {data.records.map((op: Horizon.ServerApi.OperationRecord, index: number) => (
-            <div key={op.id} className="relative">
-              {/* Timeline connector */}
-              {index < data.records.length - 1 && (
-                <div className="bg-border absolute top-8 left-3 h-full w-0.5" />
-              )}
-
-              <div className="flex gap-4">
-                {/* Timeline dot */}
-                <div className="bg-primary text-primary-foreground relative z-10 mt-1 flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
-                  {index + 1}
-                </div>
-
-                {/* Operation content */}
-                <div className="min-w-0 flex-1 pb-4">
-                  <div className="mb-2 flex items-center gap-2">
-                    <OperationBadge type={op.type} />
-                  </div>
-
-                  <OperationSummary
-                    operation={op as unknown as Record<string, unknown> & { type: string }}
-                  />
-                  <OperationDetails
-                    operation={op as unknown as Record<string, unknown> & { type: string }}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function getEffectColorClass(effectType: string): string {
-  if (
-    effectType.includes("created") ||
-    effectType.includes("credited") ||
-    effectType.includes("claimed")
-  ) {
-    return "bg-success/5";
-  }
-  if (
-    effectType.includes("removed") ||
-    effectType.includes("debited") ||
-    effectType.includes("clawed")
-  ) {
-    return "bg-destructive/5";
-  }
-  if (
-    effectType.includes("updated") ||
-    effectType.includes("trade") ||
-    effectType.includes("changed")
-  ) {
-    return "bg-primary/5";
-  }
-  return "bg-card/50";
-}
-
-function TransactionEffects({ hash }: { hash: string }) {
-  const { data, isLoading, error, refetch } = useTransactionEffects(hash);
-  const t = useTranslations("transaction");
-
-  if (isLoading) {
-    return <LoadingCard rows={5} />;
-  }
-
-  if (error) {
-    return (
-      <ErrorState title={t("failedToLoadEffects")} message={error.message} onRetry={refetch} />
-    );
-  }
-
-  if (!data?.records?.length) {
-    return (
-      <Card>
-        <CardContent className="text-muted-foreground py-8 text-center">
-          {t("noEffects")}
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">
-          {t("effects")} ({data.records.length})
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          {data.records.map((effect: Horizon.ServerApi.EffectRecord) => {
-            const eff = effect as unknown as Record<string, unknown>;
-            const effectType = eff.type as string;
-            const colorClass = getEffectColorClass(effectType);
-
-            return (
-              <div
-                key={effect.id}
-                className={`flex items-center justify-between rounded-lg p-3 ${colorClass}`}
-              >
-                <div className="flex items-center gap-3">
-                  <Badge variant="outline" className="capitalize">
-                    {effectType.replace(/_/g, " ")}
-                  </Badge>
-                  {typeof eff.account === "string" && (
-                    <HashDisplay
-                      hash={eff.account}
-                      truncate
-                      startLength={6}
-                      endLength={4}
-                      linkTo={`/account/${eff.account}`}
-                      className="text-sm"
-                    />
-                  )}
-                  {typeof eff.sold_asset_code === "string" && (
-                    <span className="text-muted-foreground text-xs">
-                      {formatNumber(eff.sold_amount as string)}{" "}
-                      {eff.sold_asset_type === "native" ? "XLM" : eff.sold_asset_code}
-                      {" → "}
-                      {formatNumber(eff.bought_amount as string)}{" "}
-                      {eff.bought_asset_type === "native"
-                        ? "XLM"
-                        : (eff.bought_asset_code as string)}
-                    </span>
-                  )}
-                  {typeof eff.weight === "number" && (
-                    <span className="text-muted-foreground text-xs">weight: {eff.weight}</span>
-                  )}
-                </div>
-                {typeof eff.amount === "string" && (
-                  <span className="font-mono text-sm">
-                    {formatNumber(eff.amount)}{" "}
-                    {(eff.asset_type as string) === "native"
-                      ? "XLM"
-                      : (eff.asset_code as string) || ""}
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function RawData({ transaction }: { transaction: Horizon.ServerApi.TransactionRecord }) {
-  const t = useTranslations("transaction");
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">{t("rawData")}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div>
-            <h4 className="mb-2 text-sm font-medium">{t("envelopeXdr")}</h4>
-            <pre className="bg-muted/50 overflow-x-auto rounded-lg p-3 font-mono text-xs break-all whitespace-pre-wrap">
-              {transaction.envelope_xdr}
-            </pre>
-          </div>
-          <div>
-            <h4 className="mb-2 text-sm font-medium">{t("resultXdr")}</h4>
-            <pre className="bg-muted/50 overflow-x-auto rounded-lg p-3 font-mono text-xs break-all whitespace-pre-wrap">
-              {transaction.result_xdr}
-            </pre>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 }
 
 export function TransactionContent({ hash }: TransactionContentProps) {
@@ -339,6 +53,7 @@ export function TransactionContent({ hash }: TransactionContentProps) {
           backHref="/"
           backLabel={tCommon("home")}
         />
+        <CrossNetworkBanner entityType="transaction" entityId={hash} enabled />
         <ErrorState title={t("notFound")} message={t("notFoundMessage")} onRetry={refetch} />
       </div>
     );
@@ -368,7 +83,6 @@ export function TransactionContent({ hash }: TransactionContentProps) {
 
       <TransactionSummary transaction={transaction} />
 
-      {/* Developer Panel */}
       <DeveloperPanel
         xdrData={{
           envelope: transaction.envelope_xdr,
