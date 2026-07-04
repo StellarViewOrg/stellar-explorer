@@ -251,12 +251,6 @@ bun run tui:build
 bun run tui:test
 ```
 
-Quick smoke check (render once, no keyboard):
-
-```bash
-bun run tui:run:once
-```
-
 Optional split tiers:
 
 ```bash
@@ -444,3 +438,25 @@ Search refinements:
 - command palette groups results by source (`INDEXER`, `HORIZON`, `LOCAL`) and kind, with ranked exact/prefix matches first.
 - `search more <query> <offset>` loads additional indexed results when the backend returns a full page.
 - `search more <query> <offset>` loads additional backend search results when the palette shows a load-more row.
+
+## Troubleshooting
+
+**"no indexer_url or rpc_endpoint is configured"**
+
+The active profile has neither `rpc_endpoint` nor `indexer_url` set. Edit `~/.config/stellar-tui/config.json` or set `STELLAR_RPC_URL` before launching.
+
+**RPC lookups time out or return errors**
+
+The RPC endpoint may be unreachable or rate-limiting. Try switching to a different public endpoint or running against `testnet` (`STELLAR_NETWORK=testnet`).
+
+**SQLite "database is locked"**
+
+Another `stellar-tui` process is holding the cache. Close other instances, or set a different `cache.path` in your config to run isolated sessions.
+
+**Cache shows stale data**
+
+Press `r` on the lookup screen to force a network refresh. For a full cache reset, delete `~/.config/stellar-tui/cache.db` and restart.
+
+**Hybrid mode shows RPC fallback instead of indexed data**
+
+`services/tui-indexer` is either not running or unreachable at the configured `indexer_url`. Start it with `bun run tui-indexer:run:serve` and verify connectivity before switching to hybrid mode.
