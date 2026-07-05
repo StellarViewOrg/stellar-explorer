@@ -71,6 +71,8 @@ Processes a range of ledgers using parallel workers. Works with any network (pub
 RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet ./bin/indexer backfill --start 1288000 --end 1288100
 ```
 
+**Resume support** — if interrupted, re-run with `--start` set to the last successfully ingested ledger and the indexer will pick up from there.
+
 ### S3 data lake backfill (pubnet only)
 
 Backfills historical pubnet data directly from the [Stellar AWS public data lake](https://github.com/stellar/stellar-etl) -- no RPC endpoint or AWS credentials needed. The data lake covers ledger 3 through the latest pubnet ledger (~61.5M+).
@@ -142,7 +144,8 @@ To wipe all ingested data and start fresh (useful after testing with different n
 
 ```bash
 docker compose -f infra/docker-compose.yml exec postgres psql -U explorer -d stellar_explorer -c "
-  TRUNCATE ledgers, transactions, operations, ingestion_state CASCADE;
+  TRUNCATE ledgers, transactions, operations, effects, accounts, contracts,
+    contract_events, token_events, assets, trades, network_stats, ingestion_state CASCADE;
 "
 ```
 
