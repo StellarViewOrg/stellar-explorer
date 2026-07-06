@@ -24,11 +24,13 @@ export function useWatchlist() {
     setIsHydrated(true);
   }, []);
 
-  // Save to localStorage whenever items change
+  // Save to localStorage whenever items change (debounced to avoid rapid writes)
   useEffect(() => {
-    if (isHydrated) {
+    if (!isHydrated) return;
+    const timer = setTimeout(() => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    }
+    }, 500);
+    return () => clearTimeout(timer);
   }, [items, isHydrated]);
 
   const add = useCallback(

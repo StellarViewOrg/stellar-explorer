@@ -1,8 +1,8 @@
 import type { NetworkConfig, NetworkKey } from "@/types";
 
 export const NETWORKS: Record<NetworkKey, NetworkConfig> = {
-  public: {
-    name: "Public",
+  mainnet: {
+    name: "Mainnet",
     horizonUrl: "https://horizon.stellar.org",
     rpcUrl: "https://soroban-rpc.mainnet.stellar.gateway.fm",
     passphrase: "Public Global Stellar Network ; September 2015",
@@ -21,10 +21,12 @@ export const NETWORKS: Record<NetworkKey, NetworkConfig> = {
   },
 } as const;
 
-export const DEFAULT_NETWORK: NetworkKey = "public";
+export const DEFAULT_NETWORK: NetworkKey = "mainnet";
+
+export const VALID_NETWORKS = Object.keys(NETWORKS) as NetworkKey[];
 
 export const NETWORK_COLORS: Record<NetworkKey, string> = {
-  public: "bg-success text-success-foreground",
+  mainnet: "bg-success text-success-foreground",
   testnet: "bg-warning text-warning-foreground",
   futurenet: "bg-primary text-primary-foreground",
 };
