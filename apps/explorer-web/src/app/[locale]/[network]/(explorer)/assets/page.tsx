@@ -15,7 +15,7 @@ import { useNetwork } from "@/lib/providers";
 import { NetworkBadge } from "@/components/common/network-badge";
 import { useTopAssets, useAssetsList } from "@/lib/hooks";
 import { POPULAR_ASSETS } from "@/lib/constants";
-import { Coins, Search, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
+import { Coins, Search, TrendingUp, Star, ArrowRight } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 
@@ -81,9 +81,20 @@ function TopAssetsSection() {
   return <AssetTable assets={assetsData} showRank={true} title={t("topAssets")} />;
 }
 
+function extractCursor(href?: string): string | undefined {
+  if (!href) return undefined;
+  try {
+    return new URL(href).searchParams.get("cursor") ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 function AllAssetsList() {
   const t = useTranslations("assets");
-  const { data, isLoading, error, refetch } = useAssetsList();
+  const [cursor, setCursor] = useState<string | undefined>(undefined);
+  const [history, setHistory] = useState<string[]>([]);
+  const { data, isLoading, error, refetch } = useAssetsList(cursor);
 
   if (error) {
     return <ErrorState title={t("failedToLoad")} message={error.message} onRetry={refetch} />;
@@ -93,7 +104,6 @@ function AllAssetsList() {
     return <AssetTableSkeleton rows={10} />;
   }
 
-  // Transform Horizon response to our format
   const assetsData: AssetData[] = (data?.records || []).map((record) => ({
     code: record.asset_code,
     issuer: record.asset_issuer,
@@ -103,14 +113,35 @@ function AllAssetsList() {
     flags: record.flags,
   }));
 
+  const nextCursor = extractCursor(
+    (data as { _links?: { next?: { href?: string } } })?._links?.next?.href
+  );
+
+  const handleNext = () => {
+    if (!nextCursor) return;
+    setHistory((h) => [...h, cursor ?? ""]);
+    setCursor(nextCursor);
+  };
+
+  const handlePrev = () => {
+    const prev = [...history];
+    const last = prev.pop();
+    setHistory(prev);
+    setCursor(last === "" ? undefined : last);
+  };
+
   return (
     <div className="space-y-4">
       <AssetTable assets={assetsData} showRank={false} title={t("allAssets")} />
-      {data?.records && data.records.length >= 20 && (
-        <p className="text-muted-foreground text-center text-sm">
-          {t("showingFirst")} 20 {t("assetsNote")}
-        </p>
-      )}
+      <div className="flex items-center justify-between">
+        <Button variant="outline" size="sm" onClick={handlePrev} disabled={history.length === 0}>
+          ← Previous
+        </Button>
+        <span className="text-muted-foreground text-sm">Page {history.length + 1}</span>
+        <Button variant="outline" size="sm" onClick={handleNext} disabled={!nextCursor}>
+          Next →
+        </Button>
+      </div>
     </div>
   );
 }
@@ -289,7 +320,7 @@ export default function AssetsPage() {
           <div className="space-y-4 text-center">
             <div className="flex justify-center">
               <div className="bg-chart-3/10 flex size-16 items-center justify-center rounded-2xl">
-                <Sparkles className="text-chart-3 size-8" />
+                <Star className="text-chart-3 size-8" />
               </div>
             </div>
             <div>

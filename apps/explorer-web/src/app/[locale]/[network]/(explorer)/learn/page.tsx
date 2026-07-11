@@ -21,7 +21,6 @@ import {
   BookOpen,
   Search,
   ExternalLink,
-  Sparkles,
   Globe,
   User,
   ArrowLeftRight,
@@ -39,7 +38,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Sparkles,
+  BookOpen,
   Globe,
   User,
   ArrowLeftRight,
@@ -196,7 +195,7 @@ function CategorySection({ categoryId }: { categoryId: string }) {
   const t = useTranslations("learn");
   const category = glossaryCategoryMeta.find((c) => c.id === categoryId);
   const terms = getEntriesByCategory(categoryId);
-  const Icon = category ? iconMap[category.icon] : Sparkles;
+  const Icon = category ? iconMap[category.icon] : BookOpen;
   const categoryLabel = getCategoryLabel(categoryId);
 
   if (!category || terms.length === 0) return null;
@@ -388,7 +387,7 @@ export default function LearnPage() {
               className="group hover:bg-muted/50 flex items-center gap-3 rounded-lg border p-3 transition-colors"
             >
               <div className="bg-primary/10 rounded-lg p-2">
-                <Sparkles className="text-primary size-4" />
+                <BookOpen className="text-primary size-4" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-medium">{t("stellarLearn")}</div>

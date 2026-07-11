@@ -209,7 +209,7 @@ export const glossaryTermsMeta: Record<string, GlossaryTermMeta> = {
 
 // Category metadata with icon names
 export const glossaryCategoryMeta = [
-  { id: "basics", icon: "Sparkles" },
+  { id: "basics", icon: "BookOpen" },
   { id: "network", icon: "Globe" },
   { id: "accounts", icon: "User" },
   { id: "transactions", icon: "ArrowLeftRight" },
