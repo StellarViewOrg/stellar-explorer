@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar Explorer",
-    "description": "Erkunden Sie das Stellar-Netzwerk. Sehen Sie Transaktionen, Konten, Assets und Smart Contracts."
+    "title": "Stellar View | Stellar Explorer",
+    "description": "Stellar View ist ein Open-Source Stellar Explorer — erkunden Sie Ledger, Transaktionen, Konten, Assets und Soroban Smart Contracts im Stellar-Netzwerk. Unterstützt Mainnet, Testnet und Futurenet.",
+    "brand": "Stellar View"
   },
   "navigation": {
     "overview": "Übersicht",
@@ -253,7 +254,12 @@
     "noTransactions": "Keine Transaktionen verfügbar",
     "noTransactionsDesc": "Entschuldigung, unsere aktuelle Infrastruktur speichert nur etwa 7 Tage an Transaktionsdaten. Wir bauen aktiv einen Indexer, der den vollständigen Transaktionsverlauf, detaillierte Event-Daten und eine vollständige Blockchain-Abdeckung ermöglichen wird.",
     "lastActivity": "Letzte Aktivität",
-    "contractTransactions": "Transaktionen"
+    "contractTransactions": "Transaktionen",
+    "tokenGallery": {
+      "noActivity": "Keine Token-Aktivität",
+      "noActivityDesc": "Für diesen Vertrag wurden in den letzten 7 Tagen keine Ereignisse gefunden.",
+      "recentEvents": "Karte antippen, um Details zu sehen · {count} aktuelle Ereignisse"
+    }
   },
   "watchlist": {
     "title": "Merkliste",
@@ -312,7 +318,35 @@
     "limit": "Limit:",
     "max": "Max",
     "sorobanCall": "Soroban-Vertragsaufruf",
-    "weight": "Gewicht: {weight}"
+    "weight": "Gewicht: {weight}",
+    "merged": "Konto zusammengeführt",
+    "mergedDescription": "Dieses Konto existiert nicht mehr. Es wurde dauerhaft mit einem anderen Konto zusammengeführt.",
+    "mergedInto": "Zusammengeführt in",
+    "mergeDate": "Zusammengeführt am",
+    "viewMergeTransaction": "Zusammenführungstransaktion anzeigen",
+    "statement": {
+      "exportButton": "Kontoauszug exportieren",
+      "dialogTitle": "Kontoauszug exportieren",
+      "period": "Zeitraum",
+      "format": "Format",
+      "opsCount": "{count} Operationen · letzte {days} Tage",
+      "downloadButton": "Herunterladen"
+    },
+    "createdAt": "Erstellt",
+    "offersTab": "Angebote",
+    "dataTab": "Daten",
+    "failedToLoadOffers": "Angebote konnten nicht geladen werden",
+    "noOpenOffers": "Keine offenen Angebote",
+    "noOpenOffersDesc": "Dieses Konto hat keine offenen DEX-Aufträge.",
+    "openOffers": "Offene Angebote ({count})",
+    "sellAsset": "Verkaufen {asset}",
+    "buyAsset": "Kaufen {asset}",
+    "amount": "Betrag",
+    "price": "Preis",
+    "failedToLoadData": "Dateneinträge konnten nicht geladen werden",
+    "noDataEntries": "Keine Dateneinträge",
+    "noDataEntriesDesc": "Dieses Konto hat keine gespeicherten Schlüssel-Wert-Daten.",
+    "dataEntries": "Dateneinträge ({count})"
   },
   "operations": {
     "create_account": "Konto erstellen",
@@ -626,7 +660,8 @@
     },
     "globalSearch": {
       "search": "Suchen",
-      "keyboardShortcut": "⌘"
+      "keyboardShortcut": "⌘",
+      "commandPalette": "Befehlspalette"
     },
     "breadcrumb": {
       "ariaLabel": "Breadcrumb"
@@ -944,5 +979,32 @@
       "operations": "Operationen",
       "protocolVersion": "Protokollversion"
     }
+  },
+  "crossNetwork": {
+    "checking": "Andere Netzwerke werden durchsucht...",
+    "foundOn": "Gefunden in {network}",
+    "suggestion": "Dieses {entity} wurde in {currentNetwork} nicht gefunden, existiert aber in {foundNetwork}.",
+    "switchTo": "In {network} anzeigen",
+    "dismiss": "Schließen"
+  },
+  "liquidityPool": {
+    "title": "Liquiditätspool",
+    "notFound": "Nicht gefunden",
+    "poolNotFound": "Pool nicht gefunden",
+    "poolNotFoundMessage": "Dieser Liquiditätspool existiert nicht oder konnte nicht geladen werden.",
+    "overview": "Pool-Übersicht",
+    "reserves": "Reserven",
+    "fee": "Gebühr",
+    "participants": "Teilnehmer",
+    "poolId": "Pool-ID",
+    "type": "Typ",
+    "totalShares": "Gesamtanteile",
+    "pair": "Paar",
+    "transactions": "Transaktionen",
+    "assets": "Assets",
+    "pool": "Pool",
+    "failedToLoadTx": "Transaktionen konnten nicht geladen werden",
+    "noTransactions": "Keine Transaktionen",
+    "noTransactionsDesc": "Für diesen Liquiditätspool wurden keine Transaktionen gefunden."
   }
 }

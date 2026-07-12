@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar Explorer",
-    "description": "Explore the Stellar network. View transactions, accounts, assets, and smart contracts."
+    "title": "Stellar View | Stellar Explorer",
+    "description": "Stellar View is an open-source Stellar Explorer — browse ledgers, transactions, accounts, assets, and Soroban smart contracts across the Stellar network. Supports Public, Testnet, and Futurenet.",
+    "brand": "Stellar View"
   },
   "navigation": {
     "overview": "Overview",
@@ -253,7 +254,12 @@
     "noTransactions": "No transactions available",
     "noTransactionsDesc": "Sorry, our current infrastructure only retains approximately 7 days of transaction data. We're actively building an indexer that will unlock complete transaction history, detailed event data, and full blockchain coverage.",
     "lastActivity": "Last Activity",
-    "contractTransactions": "Transactions"
+    "contractTransactions": "Transactions",
+    "tokenGallery": {
+      "noActivity": "No token activity",
+      "noActivityDesc": "No events found for this contract in the last 7 days.",
+      "recentEvents": "Tap any card to flip and see details · {count} recent events"
+    }
   },
   "watchlist": {
     "title": "Watchlist",
@@ -312,7 +318,35 @@
     "limit": "Limit:",
     "max": "Max",
     "sorobanCall": "Soroban Contract Call",
-    "weight": "Weight: {weight}"
+    "weight": "Weight: {weight}",
+    "merged": "Account Merged",
+    "mergedDescription": "This account no longer exists. It was permanently merged into another account.",
+    "mergedInto": "Merged into",
+    "mergeDate": "Merged on",
+    "viewMergeTransaction": "View merge transaction",
+    "statement": {
+      "exportButton": "Export Statement",
+      "dialogTitle": "Export Account Statement",
+      "period": "Period",
+      "format": "Format",
+      "opsCount": "{count} operations · last {days} days",
+      "downloadButton": "Download"
+    },
+    "createdAt": "Created",
+    "offersTab": "Offers",
+    "dataTab": "Data",
+    "failedToLoadOffers": "Failed to load offers",
+    "noOpenOffers": "No open offers",
+    "noOpenOffersDesc": "This account has no open DEX orders.",
+    "openOffers": "Open Offers ({count})",
+    "sellAsset": "Sell {asset}",
+    "buyAsset": "Buy {asset}",
+    "amount": "Amount",
+    "price": "Price",
+    "failedToLoadData": "Failed to load data entries",
+    "noDataEntries": "No data entries",
+    "noDataEntriesDesc": "This account has no key-value data stored.",
+    "dataEntries": "Data Entries ({count})"
   },
   "operations": {
     "create_account": "Create Account",
@@ -562,7 +596,8 @@
     },
     "globalSearch": {
       "search": "Search",
-      "keyboardShortcut": "⌘"
+      "keyboardShortcut": "⌘",
+      "commandPalette": "Command Palette"
     },
     "breadcrumb": {
       "ariaLabel": "Breadcrumb"
@@ -944,5 +979,32 @@
       "operations": "Operations",
       "protocolVersion": "Protocol Version"
     }
+  },
+  "crossNetwork": {
+    "checking": "Checking other networks...",
+    "foundOn": "Found on {network}",
+    "suggestion": "This {entity} was not found on {currentNetwork}, but was found on {foundNetwork}.",
+    "switchTo": "View on {network}",
+    "dismiss": "Dismiss"
+  },
+  "liquidityPool": {
+    "title": "Liquidity Pool",
+    "notFound": "Not found",
+    "poolNotFound": "Pool not found",
+    "poolNotFoundMessage": "This liquidity pool does not exist or could not be loaded.",
+    "overview": "Pool Overview",
+    "reserves": "Reserves",
+    "fee": "Fee",
+    "participants": "Participants",
+    "poolId": "Pool ID",
+    "type": "Type",
+    "totalShares": "Total Shares",
+    "pair": "Pair",
+    "transactions": "Transactions",
+    "assets": "Assets",
+    "pool": "Pool",
+    "failedToLoadTx": "Failed to load transactions",
+    "noTransactions": "No transactions",
+    "noTransactionsDesc": "No transactions found for this liquidity pool."
   }
 }

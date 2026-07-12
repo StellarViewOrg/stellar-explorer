@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar エクスプローラー",
-    "description": "Stellar ネットワークを探索。トランザクション、アカウント、アセット、スマートコントラクトを表示。"
+    "title": "Stellar View | Stellar Explorer",
+    "description": "Stellar View はオープンソースの Stellar Explorer です。Stellar ネットワーク上の台帳、トランザクション、アカウント、資産、Soroban スマートコントラクトを閲覧できます。Mainnet・Testnet・Futurenet 対応。",
+    "brand": "Stellar View"
   },
   "navigation": {
     "overview": "概要",
@@ -253,7 +254,12 @@
     "noTransactions": "トランザクションデータなし",
     "noTransactionsDesc": "申し訳ありません。現在のインフラストラクチャでは約7日間のトランザクションデータのみ保持しています。完全なトランザクション履歴、詳細なイベントデータ、ブロックチェーン全体のカバレッジを提供するインデクサーを積極的に構築中です。",
     "lastActivity": "最終アクティビティ",
-    "contractTransactions": "トランザクション"
+    "contractTransactions": "トランザクション",
+    "tokenGallery": {
+      "noActivity": "トークンアクティビティなし",
+      "noActivityDesc": "過去 7 日間でこのコントラクトのイベントが見つかりませんでした。",
+      "recentEvents": "カードをタップして詳細を確認 · {count} 件の最近のイベント"
+    }
   },
   "watchlist": {
     "title": "ウォッチリスト",
@@ -312,7 +318,35 @@
     "limit": "限度：",
     "max": "最大",
     "sorobanCall": "Sorobanコントラクト呼び出し",
-    "weight": "ウェイト：{weight}"
+    "weight": "ウェイト：{weight}",
+    "merged": "アカウント統合済み",
+    "mergedDescription": "このアカウントはもう存在しません。別のアカウントに永久に統合されました。",
+    "mergedInto": "統合先",
+    "mergeDate": "統合日",
+    "viewMergeTransaction": "統合トランザクションを表示",
+    "statement": {
+      "exportButton": "明細をエクスポート",
+      "dialogTitle": "口座明細書をエクスポート",
+      "period": "期間",
+      "format": "フォーマット",
+      "opsCount": "{count} 件の操作 · 過去 {days} 日間",
+      "downloadButton": "ダウンロード"
+    },
+    "createdAt": "作成日",
+    "offersTab": "注文",
+    "dataTab": "データ",
+    "failedToLoadOffers": "注文の読み込みに失敗しました",
+    "noOpenOffers": "未決済注文なし",
+    "noOpenOffersDesc": "このアカウントには未決済のDEX注文がありません。",
+    "openOffers": "未決済注文 ({count})",
+    "sellAsset": "{asset}を売る",
+    "buyAsset": "{asset}を買う",
+    "amount": "数量",
+    "price": "価格",
+    "failedToLoadData": "データエントリの読み込みに失敗しました",
+    "noDataEntries": "データエントリなし",
+    "noDataEntriesDesc": "このアカウントにはキーバリューデータが保存されていません。",
+    "dataEntries": "データエントリ ({count})"
   },
   "operations": {
     "create_account": "アカウント作成",
@@ -626,7 +660,8 @@
     },
     "globalSearch": {
       "search": "検索",
-      "keyboardShortcut": "⌘"
+      "keyboardShortcut": "⌘",
+      "commandPalette": "コマンドパレット"
     },
     "breadcrumb": {
       "ariaLabel": "パンくずリスト"
@@ -944,5 +979,32 @@
       "operations": "操作",
       "protocolVersion": "プロトコルバージョン"
     }
+  },
+  "crossNetwork": {
+    "checking": "他のネットワークを検索中...",
+    "foundOn": "{network}で見つかりました",
+    "suggestion": "この{entity}は{currentNetwork}で見つかりませんでしたが、{foundNetwork}に存在します。",
+    "switchTo": "{network}で表示",
+    "dismiss": "閉じる"
+  },
+  "liquidityPool": {
+    "title": "流動性プール",
+    "notFound": "見つかりません",
+    "poolNotFound": "プールが見つかりません",
+    "poolNotFoundMessage": "この流動性プールは存在しないか、読み込めませんでした。",
+    "overview": "プール概要",
+    "reserves": "リザーブ",
+    "fee": "手数料",
+    "participants": "参加者",
+    "poolId": "プールID",
+    "type": "タイプ",
+    "totalShares": "総シェア",
+    "pair": "ペア",
+    "transactions": "トランザクション",
+    "assets": "アセット",
+    "pool": "プール",
+    "failedToLoadTx": "トランザクションの読み込みに失敗しました",
+    "noTransactions": "トランザクションなし",
+    "noTransactionsDesc": "この流動性プールのトランザクションが見つかりませんでした。"
   }
 }
