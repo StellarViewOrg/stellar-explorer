@@ -19,7 +19,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: "Stellar Explorer",
+      title: "Stellar View | Stellar Explorer",
       favicon: "/favicon.png",
       customCss: ["./src/styles/custom.css"],
       disable404Route: true,

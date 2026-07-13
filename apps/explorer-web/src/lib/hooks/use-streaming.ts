@@ -169,9 +169,12 @@ export function useTransactionStream(options: StreamingOptions = {}) {
               disconnectTimeoutRef.current = null;
             }
 
-            // Invalidate recent transactions to refetch
+            // Invalidate recent transactions and fee stats to refetch
             queryClient.invalidateQueries({
               queryKey: stellarKeys.transactions(network),
+            });
+            queryClient.invalidateQueries({
+              queryKey: stellarKeys.feeStats(network),
             });
 
             // Call custom onMessage handler
@@ -285,14 +288,15 @@ export function useAccountOperationsStream(accountId: string, options: Streaming
               disconnectTimeoutRef.current = null;
             }
 
-            // Invalidate account operations to refetch
+            // Invalidate account queries — operations, balances, and offers may all change
             queryClient.invalidateQueries({
               queryKey: stellarKeys.accountOperations(network, accountId),
             });
-
-            // Also invalidate account data as balances might change
             queryClient.invalidateQueries({
               queryKey: stellarKeys.account(network, accountId),
+            });
+            queryClient.invalidateQueries({
+              queryKey: stellarKeys.accountOffers(network, accountId),
             });
 
             // Call custom onMessage handler

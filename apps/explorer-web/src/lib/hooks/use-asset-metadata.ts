@@ -26,8 +26,8 @@ export function useAssetMetadata(
       return response.json();
     },
     enabled: !!tomlUrl && !!code && !!issuer,
-    staleTime: Infinity, // TOML data rarely changes
-    gcTime: 24 * 60 * 60 * 1000, // Keep in cache for 24 hours
+    staleTime: 60 * 60 * 1000, // 1 hour — TOML changes occasionally; avoid serving stale branding
+    gcTime: 24 * 60 * 60 * 1000,
     retry: 1, // Only retry once on failure
   });
 }

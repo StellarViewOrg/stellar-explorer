@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "title": "Explorateur Stellar",
-    "description": "Explorez le réseau Stellar. Consultez les transactions, comptes, actifs et contrats intelligents."
+    "title": "Stellar View | Stellar Explorer",
+    "description": "Stellar View est un Stellar Explorer open-source — explorez les ledgers, transactions, comptes, actifs et contrats intelligents Soroban sur le réseau Stellar. Compatible Mainnet, Testnet et Futurenet.",
+    "brand": "Stellar View"
   },
   "navigation": {
     "overview": "Aperçu",
@@ -253,7 +254,12 @@
     "noTransactions": "Aucune transaction disponible",
     "noTransactionsDesc": "Désolé, notre infrastructure actuelle ne conserve qu'environ 7 jours de données de transactions. Nous construisons activement un indexeur qui permettra un historique complet des transactions, des données d'événements détaillées et une couverture totale de la blockchain.",
     "lastActivity": "Dernière Activité",
-    "contractTransactions": "Transactions"
+    "contractTransactions": "Transactions",
+    "tokenGallery": {
+      "noActivity": "Aucune activité de jeton",
+      "noActivityDesc": "Aucun événement trouvé pour ce contrat au cours des 7 derniers jours.",
+      "recentEvents": "Appuyez sur une carte pour voir les détails · {count} événements récents"
+    }
   },
   "watchlist": {
     "title": "Favoris",
@@ -312,7 +318,35 @@
     "limit": "Limite:",
     "max": "Max",
     "sorobanCall": "Appel de Contrat Soroban",
-    "weight": "Poids: {weight}"
+    "weight": "Poids: {weight}",
+    "merged": "Compte Fusionné",
+    "mergedDescription": "Ce compte n'existe plus. Il a été définitivement fusionné avec un autre compte.",
+    "mergedInto": "Fusionné dans",
+    "mergeDate": "Fusionné le",
+    "viewMergeTransaction": "Voir la transaction de fusion",
+    "statement": {
+      "exportButton": "Exporter le Relevé",
+      "dialogTitle": "Exporter le Relevé de Compte",
+      "period": "Période",
+      "format": "Format",
+      "opsCount": "{count} opérations · {days} derniers jours",
+      "downloadButton": "Télécharger"
+    },
+    "createdAt": "Créé",
+    "offersTab": "Offres",
+    "dataTab": "Données",
+    "failedToLoadOffers": "Échec du chargement des offres",
+    "noOpenOffers": "Aucune offre ouverte",
+    "noOpenOffersDesc": "Ce compte n'a pas d'ordres DEX ouverts.",
+    "openOffers": "Offres Ouvertes ({count})",
+    "sellAsset": "Vendre {asset}",
+    "buyAsset": "Acheter {asset}",
+    "amount": "Montant",
+    "price": "Prix",
+    "failedToLoadData": "Échec du chargement des entrées de données",
+    "noDataEntries": "Aucune entrée de données",
+    "noDataEntriesDesc": "Ce compte n'a pas de données clé-valeur stockées.",
+    "dataEntries": "Entrées de Données ({count})"
   },
   "operations": {
     "create_account": "Creer un compte",
@@ -626,7 +660,8 @@
     },
     "globalSearch": {
       "search": "Rechercher",
-      "keyboardShortcut": "⌘"
+      "keyboardShortcut": "⌘",
+      "commandPalette": "Palette de Commandes"
     },
     "breadcrumb": {
       "ariaLabel": "Fil d'Ariane"
@@ -944,5 +979,32 @@
       "operations": "Opérations",
       "protocolVersion": "Version du Protocole"
     }
+  },
+  "crossNetwork": {
+    "checking": "Vérification des autres réseaux...",
+    "foundOn": "Trouvé sur {network}",
+    "suggestion": "Ce {entity} n'a pas été trouvé sur {currentNetwork}, mais il existe sur {foundNetwork}.",
+    "switchTo": "Voir sur {network}",
+    "dismiss": "Ignorer"
+  },
+  "liquidityPool": {
+    "title": "Pool de Liquidité",
+    "notFound": "Non trouvé",
+    "poolNotFound": "Pool introuvable",
+    "poolNotFoundMessage": "Ce pool de liquidité n'existe pas ou n'a pas pu être chargé.",
+    "overview": "Aperçu du Pool",
+    "reserves": "Réserves",
+    "fee": "Frais",
+    "participants": "Participants",
+    "poolId": "ID du Pool",
+    "type": "Type",
+    "totalShares": "Total des Parts",
+    "pair": "Paire",
+    "transactions": "Transactions",
+    "assets": "Actifs",
+    "pool": "Pool",
+    "failedToLoadTx": "Échec du chargement des transactions",
+    "noTransactions": "Aucune transaction",
+    "noTransactionsDesc": "Aucune transaction trouvée pour ce pool de liquidité."
   }
 }

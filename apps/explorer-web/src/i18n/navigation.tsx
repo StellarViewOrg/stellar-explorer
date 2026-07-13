@@ -5,7 +5,7 @@ import { locales, defaultLocale } from "./config";
 import { useParams } from "next/navigation";
 import { forwardRef, type ComponentProps } from "react";
 
-const VALID_NETWORKS = ["public", "testnet", "futurenet"] as const;
+const VALID_NETWORKS = ["mainnet", "testnet", "futurenet"] as const;
 
 const nav = createNavigation({ locales, defaultLocale });
 
@@ -14,7 +14,7 @@ export const { redirect, getPathname } = nav;
 
 /**
  * Read the current network from URL params.
- * Falls back to "public" if not present or invalid (e.g. in not-found pages).
+ * Falls back to "mainnet" if not present or invalid (e.g. in not-found pages).
  */
 export function useNetworkPrefix(): string {
   const params = useParams();
@@ -22,7 +22,7 @@ export function useNetworkPrefix(): string {
   if (network && (VALID_NETWORKS as readonly string[]).includes(network)) {
     return `/${network}`;
   }
-  return "/public";
+  return "/mainnet";
 }
 
 /**

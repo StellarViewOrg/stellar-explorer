@@ -3,7 +3,7 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useParams } from "next/navigation";
 import type { NetworkKey } from "@/types";
-import { DEFAULT_NETWORK, NETWORKS } from "@/lib/constants";
+import { DEFAULT_NETWORK, NETWORKS, VALID_NETWORKS } from "@/lib/constants";
 import { usePathname } from "@/i18n/navigation";
 
 interface NetworkContextValue {
@@ -13,8 +13,6 @@ interface NetworkContextValue {
 }
 
 const NetworkContext = createContext<NetworkContextValue | null>(null);
-
-const VALID_NETWORKS: NetworkKey[] = ["public", "testnet", "futurenet"];
 
 export function NetworkProvider({ children }: { children: ReactNode }) {
   const params = useParams();

@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TransactionContent } from "./transaction-content";
+import { JsonLd } from "@/components/common/json-ld";
 
 type Props = {
-  params: Promise<{ hash: string }>;
+  params: Promise<{ hash: string; network: string; locale: string }>;
 };
 
 function isValidTransactionHash(hash: string): boolean {
@@ -31,11 +32,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function TransactionPage({ params }: Props) {
-  const { hash } = await params;
+  const { hash, network } = await params;
 
   if (!isValidTransactionHash(hash)) {
     return notFound();
   }
 
-  return <TransactionContent hash={hash} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "DigitalDocument",
+    identifier: hash,
+    name: `Stellar Transaction ${hash.slice(0, 8)}…${hash.slice(-8)}`,
+    description: `A transaction recorded on the Stellar ${network} network.`,
+    encodingFormat: "application/json+stellar-xdr",
+    about: {
+      "@type": "Thing",
+      name: "Stellar Blockchain Transaction",
+      description: "A cryptographically signed operation on the Stellar network",
+    },
+  };
+
+  return (
+    <>
+      <JsonLd data={jsonLd} />
+      <TransactionContent hash={hash} />
+    </>
+  );
 }

@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "title": "Explorador Stellar",
-    "description": "Explore a rede Stellar. Veja transações, contas, ativos e contratos inteligentes."
+    "title": "Stellar View | Stellar Explorer",
+    "description": "Stellar View é um Stellar Explorer de código aberto — explore ledgers, transações, contas, ativos e contratos inteligentes Soroban na rede Stellar. Suporta Mainnet, Testnet e Futurenet.",
+    "brand": "Stellar View"
   },
   "navigation": {
     "overview": "Visão Geral",
@@ -253,7 +254,12 @@
     "noTransactions": "Nenhuma transação disponível",
     "noTransactionsDesc": "Desculpe, nossa infraestrutura atual retém apenas aproximadamente 7 dias de dados de transações. Estamos construindo ativamente um indexador que permitirá o histórico completo de transações, dados detalhados de eventos e cobertura total da blockchain.",
     "lastActivity": "Última Atividade",
-    "contractTransactions": "Transações"
+    "contractTransactions": "Transações",
+    "tokenGallery": {
+      "noActivity": "Sem atividade de token",
+      "noActivityDesc": "Nenhum evento encontrado para este contrato nos últimos 7 dias.",
+      "recentEvents": "Toque em qualquer cartão para ver detalhes · {count} eventos recentes"
+    }
   },
   "watchlist": {
     "title": "Favoritos",
@@ -312,7 +318,35 @@
     "limit": "Limite:",
     "max": "Máx",
     "sorobanCall": "Chamada de Contrato Soroban",
-    "weight": "Peso: {weight}"
+    "weight": "Peso: {weight}",
+    "merged": "Conta Mesclada",
+    "mergedDescription": "Esta conta não existe mais. Foi permanentemente mesclada com outra conta.",
+    "mergedInto": "Mesclada em",
+    "mergeDate": "Mesclada em",
+    "viewMergeTransaction": "Ver transação de mesclagem",
+    "statement": {
+      "exportButton": "Exportar Extrato",
+      "dialogTitle": "Exportar Extrato da Conta",
+      "period": "Período",
+      "format": "Formato",
+      "opsCount": "{count} operações · últimos {days} dias",
+      "downloadButton": "Baixar"
+    },
+    "createdAt": "Criado",
+    "offersTab": "Ofertas",
+    "dataTab": "Dados",
+    "failedToLoadOffers": "Falha ao carregar ofertas",
+    "noOpenOffers": "Sem ofertas abertas",
+    "noOpenOffersDesc": "Esta conta não tem ordens DEX abertas.",
+    "openOffers": "Ofertas Abertas ({count})",
+    "sellAsset": "Vender {asset}",
+    "buyAsset": "Comprar {asset}",
+    "amount": "Valor",
+    "price": "Preço",
+    "failedToLoadData": "Falha ao carregar entradas de dados",
+    "noDataEntries": "Sem entradas de dados",
+    "noDataEntriesDesc": "Esta conta não tem dados chave-valor armazenados.",
+    "dataEntries": "Entradas de Dados ({count})"
   },
   "operations": {
     "create_account": "Criar conta",
@@ -626,7 +660,8 @@
     },
     "globalSearch": {
       "search": "Buscar",
-      "keyboardShortcut": "⌘"
+      "keyboardShortcut": "⌘",
+      "commandPalette": "Paleta de Comandos"
     },
     "breadcrumb": {
       "ariaLabel": "Navegação"
@@ -944,5 +979,32 @@
       "operations": "Operações",
       "protocolVersion": "Versão do Protocolo"
     }
+  },
+  "crossNetwork": {
+    "checking": "Verificando outras redes...",
+    "foundOn": "Encontrado em {network}",
+    "suggestion": "Este {entity} não foi encontrado em {currentNetwork}, mas existe em {foundNetwork}.",
+    "switchTo": "Ver em {network}",
+    "dismiss": "Ignorar"
+  },
+  "liquidityPool": {
+    "title": "Pool de Liquidez",
+    "notFound": "Não encontrado",
+    "poolNotFound": "Pool não encontrado",
+    "poolNotFoundMessage": "Este pool de liquidez não existe ou não pôde ser carregado.",
+    "overview": "Visão Geral do Pool",
+    "reserves": "Reservas",
+    "fee": "Taxa",
+    "participants": "Participantes",
+    "poolId": "ID do Pool",
+    "type": "Tipo",
+    "totalShares": "Total de Cotas",
+    "pair": "Par",
+    "transactions": "Transações",
+    "assets": "Ativos",
+    "pool": "Pool",
+    "failedToLoadTx": "Falha ao carregar transações",
+    "noTransactions": "Sem transações",
+    "noTransactionsDesc": "Nenhuma transação encontrada para este pool de liquidez."
   }
 }

@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar Explorer",
-    "description": "Stellar 네트워크를 탐색하세요. 트랜잭션, 계정, 자산 및 스마트 컨트랙트를 확인할 수 있습니다."
+    "title": "Stellar View | Stellar Explorer",
+    "description": "Stellar View는 오픈소스 Stellar Explorer입니다. Stellar 네트워크의 원장, 트랜잭션, 계정, 자산 및 Soroban 스마트 컨트랙트를 탐색하세요. Mainnet, Testnet, Futurenet 지원.",
+    "brand": "Stellar View"
   },
   "navigation": {
     "overview": "개요",
@@ -253,7 +254,12 @@
     "noTransactions": "트랜잭션 데이터 없음",
     "noTransactionsDesc": "죄송합니다. 현재 인프라는 약 7일간의 트랜잭션 데이터만 보존합니다. 완전한 트랜잭션 기록, 상세한 이벤트 데이터, 전체 블록체인 커버리지를 제공할 인덱서를 적극적으로 구축하고 있습니다.",
     "lastActivity": "마지막 활동",
-    "contractTransactions": "트랜잭션"
+    "contractTransactions": "트랜잭션",
+    "tokenGallery": {
+      "noActivity": "토큰 활동 없음",
+      "noActivityDesc": "최근 7일 동안 이 계약의 이벤트가 없습니다.",
+      "recentEvents": "카드를 탭하여 세부 정보 확인 · 최근 {count}개 이벤트"
+    }
   },
   "watchlist": {
     "title": "관심목록",
@@ -312,7 +318,35 @@
     "limit": "한도:",
     "max": "최대",
     "sorobanCall": "Soroban 컨트랙트 호출",
-    "weight": "가중치: {weight}"
+    "weight": "가중치: {weight}",
+    "merged": "계정 병합됨",
+    "mergedDescription": "이 계정은 더 이상 존재하지 않습니다. 다른 계정에 영구적으로 병합되었습니다.",
+    "mergedInto": "병합 대상",
+    "mergeDate": "병합 날짜",
+    "viewMergeTransaction": "병합 트랜잭션 보기",
+    "statement": {
+      "exportButton": "명세서 내보내기",
+      "dialogTitle": "계좌 명세서 내보내기",
+      "period": "기간",
+      "format": "형식",
+      "opsCount": "{count}개 작업 · 최근 {days}일",
+      "downloadButton": "다운로드"
+    },
+    "createdAt": "생성일",
+    "offersTab": "주문",
+    "dataTab": "데이터",
+    "failedToLoadOffers": "주문 로드 실패",
+    "noOpenOffers": "미결 주문 없음",
+    "noOpenOffersDesc": "이 계정에는 미결 DEX 주문이 없습니다.",
+    "openOffers": "미결 주문 ({count})",
+    "sellAsset": "{asset} 판매",
+    "buyAsset": "{asset} 구매",
+    "amount": "수량",
+    "price": "가격",
+    "failedToLoadData": "데이터 항목 로드 실패",
+    "noDataEntries": "데이터 항목 없음",
+    "noDataEntriesDesc": "이 계정에는 저장된 키-값 데이터가 없습니다.",
+    "dataEntries": "데이터 항목 ({count})"
   },
   "operations": {
     "create_account": "계정 생성",
@@ -562,7 +596,8 @@
     },
     "globalSearch": {
       "search": "검색",
-      "keyboardShortcut": "⌘"
+      "keyboardShortcut": "⌘",
+      "commandPalette": "커맨드 팔레트"
     },
     "breadcrumb": {
       "ariaLabel": "브레드크럼"
@@ -944,5 +979,32 @@
       "operations": "오퍼레이션",
       "protocolVersion": "프로토콜 버전"
     }
+  },
+  "crossNetwork": {
+    "checking": "다른 네트워크에서 검색 중...",
+    "foundOn": "{network}에서 찾음",
+    "suggestion": "이 {entity}는 {currentNetwork}에서 찾을 수 없지만 {foundNetwork}에 존재합니다.",
+    "switchTo": "{network}에서 보기",
+    "dismiss": "닫기"
+  },
+  "liquidityPool": {
+    "title": "유동성 풀",
+    "notFound": "찾을 수 없음",
+    "poolNotFound": "풀을 찾을 수 없음",
+    "poolNotFoundMessage": "이 유동성 풀은 존재하지 않거나 로드할 수 없습니다.",
+    "overview": "풀 개요",
+    "reserves": "준비금",
+    "fee": "수수료",
+    "participants": "참가자",
+    "poolId": "풀 ID",
+    "type": "유형",
+    "totalShares": "총 지분",
+    "pair": "쌍",
+    "transactions": "트랜잭션",
+    "assets": "자산",
+    "pool": "풀",
+    "failedToLoadTx": "트랜잭션 로드 실패",
+    "noTransactions": "트랜잭션 없음",
+    "noTransactionsDesc": "이 유동성 풀에 대한 트랜잭션을 찾을 수 없습니다."
   }
 }

@@ -19,7 +19,7 @@ export interface DecodedTransaction {
 
 export function decodeTransactionEnvelope(
   envelopeXdr: string,
-  network: NetworkKey = "public"
+  network: NetworkKey = "mainnet"
 ): DecodedTransaction | null {
   if (!envelopeXdr) return null;
 

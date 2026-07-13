@@ -4,227 +4,25 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { PageHeader } from "@/components/layout/page-header";
-import { HashDisplay } from "@/components/common/hash-display";
+import { AssetLogo } from "@/components/common/asset-logo";
 import { LoadingCard } from "@/components/common/loading-card";
 import { ErrorState } from "@/components/common/error-state";
-import { AssetLogo } from "@/components/common/asset-logo";
 import { useAsset, useAssetMetadata } from "@/lib/hooks";
-import { formatNumber, formatCompactNumber, parseAssetSlug } from "@/lib/utils";
-import type { Horizon } from "@stellar/stellar-sdk";
-import {
-  Coins,
-  Users,
-  TrendingUp,
-  Lock,
-  Unlock,
-  Shield,
-  CheckCircle2,
-  XCircle,
-  Building2,
-} from "lucide-react";
+import { parseAssetSlug } from "@/lib/utils";
+import { Lock, Unlock, Building2, BarChart3, BookOpen, Star, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
-
-/** Extended asset record type for properties returned by the Horizon API but not typed in the SDK */
-type AssetRecordExtended = Horizon.ServerApi.AssetRecord & {
-  amount: string;
-  num_accounts: number;
-  _links?: { toml?: { href?: string }; [key: string]: unknown };
-};
+import type { AssetRecordExtended } from "./sections/types";
+import { AssetSummary } from "./sections/asset-summary";
+import { AssetFlags } from "./sections/asset-flags";
+import { AssetStats } from "./sections/asset-stats";
+import { AssetHolders } from "./sections/asset-holders";
+import { AssetTrades } from "./sections/asset-trades";
+import { AssetOrderbook } from "./sections/asset-orderbook";
+import { AssetMarketData } from "./sections/asset-market-data";
 
 interface AssetContentProps {
   slug: string;
-}
-
-function FlagBadge({
-  enabled,
-  label,
-  enabledIcon: EnabledIcon = CheckCircle2,
-  disabledIcon: DisabledIcon = XCircle,
-}: {
-  enabled: boolean;
-  label: string;
-  enabledIcon?: typeof CheckCircle2;
-  disabledIcon?: typeof XCircle;
-}) {
-  const t = useTranslations("assetDetails");
-
-  return (
-    <div className="bg-card/50 flex items-center justify-between rounded-lg p-3">
-      <span className="text-sm">{label}</span>
-      <Badge
-        variant="outline"
-        className={
-          enabled
-            ? "bg-success/15 text-success border-success/25"
-            : "bg-muted text-muted-foreground"
-        }
-      >
-        {enabled ? (
-          <EnabledIcon className="mr-1 size-3" />
-        ) : (
-          <DisabledIcon className="mr-1 size-3" />
-        )}
-        {enabled ? t("enabled") : t("disabled")}
-      </Badge>
-    </div>
-  );
-}
-
-function AssetSummary({ asset }: { asset: AssetRecordExtended }) {
-  const t = useTranslations("assetDetails");
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">{t("information")}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* Left column - Stats */}
-          <div className="space-y-4">
-            <div className="bg-primary/5 border-primary/10 rounded-lg border p-4">
-              <div className="text-muted-foreground mb-1 flex items-center gap-2 text-sm">
-                <Coins className="size-4" />
-                {t("totalSupply")}
-              </div>
-              <div className="text-2xl font-semibold tabular-nums">
-                {formatNumber(asset.amount)}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="bg-card/50 rounded-lg p-4">
-                <div className="text-muted-foreground mb-1 flex items-center gap-2 text-sm">
-                  <Users className="size-4" />
-                  {t("accounts")}
-                </div>
-                <div className="text-xl font-semibold tabular-nums">
-                  {formatCompactNumber(asset.num_accounts)}
-                </div>
-              </div>
-
-              <div className="bg-card/50 rounded-lg p-4">
-                <div className="text-muted-foreground mb-1 flex items-center gap-2 text-sm">
-                  <TrendingUp className="size-4" />
-                  {t("claimableBalances")}
-                </div>
-                <div className="text-xl font-semibold tabular-nums">
-                  {formatCompactNumber(asset.claimable_balances_amount || "0")}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right column - Details */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("assetCode")}</span>
-              <span className="font-medium">{asset.asset_code}</span>
-            </div>
-            <Separator />
-            <div className="flex items-start justify-between">
-              <span className="text-muted-foreground text-sm">{t("issuer")}</span>
-              <HashDisplay
-                hash={asset.asset_issuer}
-                truncate
-                linkTo={`/account/${asset.asset_issuer}`}
-                className="text-sm"
-              />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("assetType")}</span>
-              <Badge variant="secondary">{asset.asset_type}</Badge>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">{t("liquidityPools")}</span>
-              <span className="text-sm font-medium">{asset.num_liquidity_pools || 0}</span>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function AssetFlags({ asset }: { asset: AssetRecordExtended }) {
-  const flags = asset.flags;
-  const t = useTranslations("assetDetails");
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Shield className="size-4" />
-          {t("flags")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        <FlagBadge
-          enabled={flags.auth_required}
-          label={t("authRequired")}
-          enabledIcon={Lock}
-          disabledIcon={Unlock}
-        />
-        <FlagBadge
-          enabled={flags.auth_revocable}
-          label={t("authRevocable")}
-          enabledIcon={Lock}
-          disabledIcon={Unlock}
-        />
-        <FlagBadge
-          enabled={flags.auth_immutable}
-          label={t("authImmutable")}
-          enabledIcon={Lock}
-          disabledIcon={Unlock}
-        />
-        <FlagBadge enabled={flags.auth_clawback_enabled} label={t("clawbackEnabled")} />
-      </CardContent>
-    </Card>
-  );
-}
-
-function AssetStats({ asset }: { asset: AssetRecordExtended }) {
-  const t = useTranslations("assetDetails");
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">{t("statistics")}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-          <div className="bg-card/50 rounded-lg p-4 text-center">
-            <div className="text-2xl font-semibold tabular-nums">
-              {formatCompactNumber(asset.num_accounts)}
-            </div>
-            <div className="text-muted-foreground mt-1 text-xs">{t("totalHolders")}</div>
-          </div>
-          <div className="bg-card/50 rounded-lg p-4 text-center">
-            <div className="text-2xl font-semibold tabular-nums">
-              {formatCompactNumber(asset.amount)}
-            </div>
-            <div className="text-muted-foreground mt-1 text-xs">{t("circulating")}</div>
-          </div>
-          <div className="bg-card/50 rounded-lg p-4 text-center">
-            <div className="text-2xl font-semibold tabular-nums">
-              {formatCompactNumber(asset.num_liquidity_pools || 0)}
-            </div>
-            <div className="text-muted-foreground mt-1 text-xs">{t("liquidityPools")}</div>
-          </div>
-          <div className="bg-card/50 rounded-lg p-4 text-center">
-            <div className="text-2xl font-semibold tabular-nums">
-              {formatCompactNumber(asset.accounts?.authorized || 0)}
-            </div>
-            <div className="text-muted-foreground mt-1 text-xs">{t("authorized")}</div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 }
 
 export function AssetContent({ slug }: AssetContentProps) {
@@ -232,7 +30,6 @@ export function AssetContent({ slug }: AssetContentProps) {
   const t = useTranslations("assetDetails");
   const tCommon = useTranslations("common");
 
-  // Handle native XLM separately
   const isNative = parsed?.issuer === "native";
 
   const {
@@ -242,7 +39,6 @@ export function AssetContent({ slug }: AssetContentProps) {
     refetch,
   } = useAsset(parsed?.code || "", isNative ? "" : parsed?.issuer || "");
 
-  // Fetch metadata from stellar.toml - must be called unconditionally (React hooks rules)
   const assetRecord = asset as { _links?: { toml?: { href?: string } } } | undefined;
   const tomlUrl = assetRecord?._links?.toml?.href;
   const { data: metadata } = useAssetMetadata(asset?.asset_code, asset?.asset_issuer, tomlUrl);
@@ -251,7 +47,6 @@ export function AssetContent({ slug }: AssetContentProps) {
     return notFound();
   }
 
-  // For native XLM, show a simplified view
   if (isNative) {
     return (
       <div className="space-y-6">
@@ -356,10 +151,38 @@ export function AssetContent({ slug }: AssetContentProps) {
       <Tabs defaultValue="stats" className="w-full">
         <TabsList>
           <TabsTrigger value="stats">{t("statistics")}</TabsTrigger>
+          <TabsTrigger value="holders">
+            <Users className="mr-1.5 size-3.5" />
+            Holders
+          </TabsTrigger>
+          <TabsTrigger value="trades">
+            <BarChart3 className="mr-1.5 size-3.5" />
+            Trades
+          </TabsTrigger>
+          <TabsTrigger value="orderbook">
+            <BookOpen className="mr-1.5 size-3.5" />
+            Orderbook
+          </TabsTrigger>
+          <TabsTrigger value="market">
+            <Star className="mr-1.5 size-3.5" />
+            Market
+          </TabsTrigger>
           <TabsTrigger value="flags">{t("flags")}</TabsTrigger>
         </TabsList>
         <TabsContent value="stats" className="mt-4">
           <AssetStats asset={asset as AssetRecordExtended} />
+        </TabsContent>
+        <TabsContent value="holders" className="mt-4">
+          <AssetHolders code={asset.asset_code} issuer={asset.asset_issuer} />
+        </TabsContent>
+        <TabsContent value="trades" className="mt-4">
+          <AssetTrades code={asset.asset_code} issuer={asset.asset_issuer} />
+        </TabsContent>
+        <TabsContent value="orderbook" className="mt-4">
+          <AssetOrderbook code={asset.asset_code} issuer={asset.asset_issuer} />
+        </TabsContent>
+        <TabsContent value="market" className="mt-4">
+          <AssetMarketData code={asset.asset_code} issuer={asset.asset_issuer} />
         </TabsContent>
         <TabsContent value="flags" className="mt-4">
           <AssetFlags asset={asset as AssetRecordExtended} />

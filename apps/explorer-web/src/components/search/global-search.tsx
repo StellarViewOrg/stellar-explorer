@@ -38,9 +38,10 @@ interface RecentSearch {
 
 interface GlobalSearchProps {
   className?: string;
+  heroMode?: boolean;
 }
 
-export function GlobalSearch({ className }: GlobalSearchProps) {
+export function GlobalSearch({ className, heroMode = false }: GlobalSearchProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
@@ -128,24 +129,41 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
         <span className="sr-only">{tComponents("search")}</span>
       </Button>
 
-      <Button
-        variant="outline"
-        className={cn(
-          "text-muted-foreground relative hidden justify-start md:flex",
-          "h-9 w-64 px-3 lg:w-80",
-          className
-        )}
-        onClick={() => setOpen(true)}
-      >
-        <Search className="mr-2 size-4" />
-        <span className="flex-1 truncate text-left">{t("placeholder")}</span>
-        <kbd className="bg-muted text-muted-foreground hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium select-none lg:inline-flex">
-          <span className="text-xs">{tComponents("keyboardShortcut")}</span>K
-        </kbd>
-      </Button>
+      {heroMode ? (
+        /* Hero mode — large full-width search trigger */
+        <button
+          className={cn(
+            "border-border/60 bg-card hover:border-primary/50 text-muted-foreground flex w-full cursor-text items-center gap-3 rounded-xl border px-4 py-3.5 text-left text-sm shadow-lg transition-all duration-200 focus:outline-none",
+            className
+          )}
+          onClick={() => setOpen(true)}
+        >
+          <Search className="size-5 shrink-0" />
+          <span className="flex-1">{t("inputPlaceholder")}</span>
+          <kbd className="bg-muted border-border hidden items-center gap-1 rounded border px-1.5 py-0.5 font-mono text-[11px] sm:flex">
+            <span>{tComponents("keyboardShortcut")}</span>K
+          </kbd>
+        </button>
+      ) : (
+        <Button
+          variant="outline"
+          className={cn(
+            "text-muted-foreground relative hidden justify-start md:flex",
+            "h-9 w-64 px-3 lg:w-80",
+            className
+          )}
+          onClick={() => setOpen(true)}
+        >
+          <Search className="mr-2 size-4" />
+          <span className="flex-1 truncate text-left">{t("placeholder")}</span>
+          <kbd className="bg-muted text-muted-foreground hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium select-none lg:inline-flex">
+            <span className="text-xs">{tComponents("keyboardShortcut")}</span>K
+          </kbd>
+        </Button>
+      )}
 
       {/* Search dialog */}
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={setOpen} title={tComponents("commandPalette")}>
         <CommandInput
           placeholder={t("inputPlaceholder")}
           value={query}

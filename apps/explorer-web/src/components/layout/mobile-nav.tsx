@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { StellarLogo } from "./stellar-icon";
+import Image from "next/image";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
@@ -53,7 +53,13 @@ export function MobileNav() {
       <SheetContent side="left" className="w-72 p-0">
         <SheetHeader className="border-border border-b p-4">
           <SheetTitle className="flex items-center gap-3">
-            <StellarLogo className="size-8" />
+            <Image
+              src="/stellar-explorer.png"
+              alt="Stellar Explorer"
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
             <span>{tMobile("stellarExplorer")}</span>
           </SheetTitle>
         </SheetHeader>

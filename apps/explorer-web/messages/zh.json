@@ -1,7 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar 浏览器",
-    "description": "探索 Stellar 网络。查看交易、账户、资产和智能合约。"
+    "title": "Stellar View | Stellar Explorer",
+    "description": "Stellar View 是开源的 Stellar Explorer — 浏览 Stellar 网络上的账本、交易、账户、资产和 Soroban 智能合约。支持主网、测试网和 Futurenet。",
+    "brand": "Stellar View"
   },
   "navigation": {
     "overview": "概览",
@@ -253,7 +254,12 @@
     "noTransactions": "暂无交易数据",
     "noTransactionsDesc": "抱歉，我们当前的基础设施仅保留约7天的交易数据。我们正在积极构建索引器，届时将提供完整的交易历史、详细的事件数据和全面的区块链覆盖。",
     "lastActivity": "最后活动",
-    "contractTransactions": "交易"
+    "contractTransactions": "交易",
+    "tokenGallery": {
+      "noActivity": "无代币活动",
+      "noActivityDesc": "过去 7 天内未找到此合约的事件。",
+      "recentEvents": "点击任意卡片查看详情 · {count} 个最近事件"
+    }
   },
   "watchlist": {
     "title": "关注列表",
@@ -312,7 +318,35 @@
     "limit": "限额：",
     "max": "最大",
     "sorobanCall": "Soroban 合约调用",
-    "weight": "权重：{weight}"
+    "weight": "权重：{weight}",
+    "merged": "账户已合并",
+    "mergedDescription": "此账户不再存在。它已被永久合并到另一个账户中。",
+    "mergedInto": "合并到",
+    "mergeDate": "合并日期",
+    "viewMergeTransaction": "查看合并交易",
+    "statement": {
+      "exportButton": "导出对账单",
+      "dialogTitle": "导出账户对账单",
+      "period": "周期",
+      "format": "格式",
+      "opsCount": "{count} 个操作 · 最近 {days} 天",
+      "downloadButton": "下载"
+    },
+    "createdAt": "创建时间",
+    "offersTab": "挂单",
+    "dataTab": "数据",
+    "failedToLoadOffers": "加载挂单失败",
+    "noOpenOffers": "无未结挂单",
+    "noOpenOffersDesc": "此账户没有未结的DEX订单。",
+    "openOffers": "未结挂单 ({count})",
+    "sellAsset": "卖出 {asset}",
+    "buyAsset": "买入 {asset}",
+    "amount": "数量",
+    "price": "价格",
+    "failedToLoadData": "加载数据条目失败",
+    "noDataEntries": "无数据条目",
+    "noDataEntriesDesc": "此账户没有存储的键值数据。",
+    "dataEntries": "数据条目 ({count})"
   },
   "operations": {
     "create_account": "创建账户",
@@ -626,7 +660,8 @@
     },
     "globalSearch": {
       "search": "搜索",
-      "keyboardShortcut": "⌘"
+      "keyboardShortcut": "⌘",
+      "commandPalette": "命令面板"
     },
     "breadcrumb": {
       "ariaLabel": "面包屑导航"
@@ -944,5 +979,32 @@
       "operations": "操作",
       "protocolVersion": "协议版本"
     }
+  },
+  "crossNetwork": {
+    "checking": "正在搜索其他网络...",
+    "foundOn": "在 {network} 中找到",
+    "suggestion": "在 {currentNetwork} 中未找到此 {entity}，但在 {foundNetwork} 中存在。",
+    "switchTo": "在 {network} 中查看",
+    "dismiss": "关闭"
+  },
+  "liquidityPool": {
+    "title": "流动性池",
+    "notFound": "未找到",
+    "poolNotFound": "未找到池",
+    "poolNotFoundMessage": "此流动性池不存在或无法加载。",
+    "overview": "池概览",
+    "reserves": "储备",
+    "fee": "费率",
+    "participants": "参与者",
+    "poolId": "池 ID",
+    "type": "类型",
+    "totalShares": "总份额",
+    "pair": "交易对",
+    "transactions": "交易",
+    "assets": "资产",
+    "pool": "池",
+    "failedToLoadTx": "加载交易失败",
+    "noTransactions": "无交易",
+    "noTransactionsDesc": "未找到此流动性池的交易记录。"
   }
 }

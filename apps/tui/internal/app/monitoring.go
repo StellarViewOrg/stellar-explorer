@@ -73,7 +73,7 @@ func (m *Model) RestoreLiveFeedMonitoringContext() bool {
 		}
 	}
 
-	m.selection.LiveFeedIndex = clampLiveFeedIndex(context.SelectedIndex, len(m.liveFeed.RecentTransactions))
+	m.selection.LiveFeedIndex = clampIndex(context.SelectedIndex, len(m.liveFeed.RecentTransactions))
 	m.selection.LiveFeedScrollOffset = context.ScrollOffset
 	m.status = Status{
 		Level:   StatusInfo,

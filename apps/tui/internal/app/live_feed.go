@@ -206,7 +206,7 @@ func (m *Model) applyLiveFeedView(added int) {
 			}
 		}
 	}
-	m.selection.LiveFeedIndex = clampLiveFeedIndex(m.selection.LiveFeedIndex, len(m.liveFeed.RecentTransactions))
+	m.selection.LiveFeedIndex = clampIndex(m.selection.LiveFeedIndex, len(m.liveFeed.RecentTransactions))
 }
 
 // ApplyLiveFeedStreamUpdate merges stream payloads into the retained scrollback.

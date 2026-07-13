@@ -4,6 +4,7 @@ import { QRCodeSVG } from "qrcode.react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -48,6 +49,9 @@ export function QrDialog({ value, title }: QrDialogProps) {
       <DialogContent className="sm:max-w-xs">
         <DialogHeader>
           <DialogTitle>{title ?? t("title")}</DialogTitle>
+          <DialogDescription className="sr-only">
+            Scan this QR code to open the address on a mobile device.
+          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center gap-4 py-4">
           <div className="rounded-lg bg-white p-4">

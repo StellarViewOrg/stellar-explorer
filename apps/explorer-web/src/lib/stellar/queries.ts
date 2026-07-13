@@ -1,12 +1,67 @@
 import type { NetworkKey } from "@/types";
 import type { Horizon, xdr } from "@stellar/stellar-sdk";
-import { getHorizonClient, getRpcClient } from "./client";
-import {
-  LIVE_LEDGER_POLL_INTERVAL,
-  DEFAULT_PAGE_SIZE,
-  STALE_TIME,
-  POPULAR_ASSETS,
-} from "@/lib/constants";
+import { getHorizonClient, getRpcClient, fetchStellarExpert } from "./client";
+import type { StellarExpertResult } from "./client";
+import { DEFAULT_PAGE_SIZE, STALE_TIME, POPULAR_ASSETS } from "@/lib/constants";
+
+// Stellar Expert API response shapes
+export interface StellarExpertAssetAnalytics {
+  asset: string;
+  created: number;
+  supply: number;
+  payments: number;
+  payments_amount: number;
+  trades: number;
+  trades_amount: number;
+  rating?: { average: number; criteria?: Record<string, number> };
+  volume7d?: number;
+  volume30d?: number;
+  price?: number;
+  price7d?: number;
+  price30d?: number;
+}
+
+export interface StellarExpertAccountProfile {
+  id: string;
+  created: number;
+  payments: number;
+  trades: number;
+  home_domain?: string;
+  assets_created?: number;
+  merge_history?: number[];
+}
+
+export interface StellarExpertNetworkActivity {
+  history: Array<{
+    date: number;
+    transactions_count: number;
+    operations_count: number;
+    payments_amount: number;
+    trades_count: number;
+    active_accounts: number;
+    new_accounts: number;
+    network_fees: number;
+    average_fee: number;
+    ledgers_count: number;
+  }>;
+}
+
+export interface StellarExpertNetworkStats {
+  ledgers_count: number;
+  transactions_count: number;
+  operations_count: number;
+  payments_count: number;
+  payments_amount: number;
+  trades_count: number;
+  total_accounts: number;
+  active_accounts: number;
+  total_assets: number;
+  horizon_version: string;
+  core_version: string;
+  protocol_version: number;
+  base_reserve: number;
+  base_fee: number;
+}
 
 // Query key factory for consistent cache keys
 export const stellarKeys = {
@@ -61,9 +116,63 @@ export const stellarKeys = {
     [...stellarKeys.contract(network, id), "code"] as const,
   contractStorage: (network: NetworkKey, id: string) =>
     [...stellarKeys.contract(network, id), "storage"] as const,
+  contractInvocations: (network: NetworkKey, id: string) =>
+    [...stellarKeys.contract(network, id), "invocations"] as const,
+  contractBalance: (network: NetworkKey, id: string) =>
+    [...stellarKeys.contract(network, id), "balance"] as const,
 
   // Fee stats
   feeStats: (network: NetworkKey) => [...stellarKeys.network(network), "feeStats"] as const,
+
+  // Account extensions
+  accountOffers: (network: NetworkKey, id: string, cursor?: string) =>
+    [...stellarKeys.account(network, id), "offers", cursor] as const,
+  accountDataEntries: (network: NetworkKey, id: string) =>
+    [...stellarKeys.account(network, id), "data"] as const,
+
+  // Liquidity pools
+  liquidityPools: (network: NetworkKey) =>
+    [...stellarKeys.network(network), "liquidity_pools"] as const,
+  liquidityPool: (network: NetworkKey, id: string) =>
+    [...stellarKeys.network(network), "liquidity_pools", id] as const,
+  liquidityPoolsList: (network: NetworkKey, cursor?: string) =>
+    [...stellarKeys.network(network), "liquidity_pools", "list", cursor] as const,
+  assetLiquidityPools: (network: NetworkKey, code: string, issuer: string) =>
+    [...stellarKeys.asset(network, code, issuer), "liquidity_pools"] as const,
+  liquidityPoolTransactions: (network: NetworkKey, id: string) =>
+    [...stellarKeys.network(network), "liquidity_pools", id, "transactions"] as const,
+
+  // Claimable balances
+  claimableBalancesList: (
+    network: NetworkKey,
+    assetCode?: string,
+    assetIssuer?: string,
+    cursor?: string
+  ) =>
+    [
+      ...stellarKeys.network(network),
+      "claimable_balances",
+      "list",
+      assetCode,
+      assetIssuer,
+      cursor,
+    ] as const,
+  assetClaimableBalances: (network: NetworkKey, code: string, issuer: string) =>
+    [...stellarKeys.asset(network, code, issuer), "claimable_balances"] as const,
+
+  // RPC network info
+  rpcNetworkInfo: (network: NetworkKey) =>
+    [...stellarKeys.network(network), "rpc_network_info"] as const,
+
+  // Stellar Expert
+  assetAnalytics: (network: NetworkKey, code: string, issuer: string) =>
+    [...stellarKeys.network(network), "stellar_expert", "asset", code, issuer] as const,
+  accountProfile: (network: NetworkKey, id: string) =>
+    [...stellarKeys.network(network), "stellar_expert", "account", id] as const,
+  networkActivity: (network: NetworkKey) =>
+    [...stellarKeys.network(network), "stellar_expert", "network_activity"] as const,
+  networkStats: (network: NetworkKey) =>
+    [...stellarKeys.network(network), "stellar_expert", "stats"] as const,
 };
 
 // Query option factories for TanStack Query
@@ -76,7 +185,6 @@ export const stellarQueries = {
       const response = await horizon.ledgers().order("desc").limit(1).call();
       return response.records[0];
     },
-    refetchInterval: LIVE_LEDGER_POLL_INTERVAL,
     staleTime: 0,
   }),
 
@@ -107,7 +215,6 @@ export const stellarQueries = {
       const horizon = getHorizonClient(network);
       return horizon.transactions().order("desc").limit(limit).call();
     },
-    refetchInterval: LIVE_LEDGER_POLL_INTERVAL,
     staleTime: STALE_TIME,
   }),
 
@@ -292,7 +399,7 @@ export const stellarQueries = {
         ),
       };
     },
-    staleTime: 60000, // 1 minute
+    staleTime: 30_000, // 30s — matches orderbook freshness so asset page shows consistent data age
   }),
 
   // Orderbook for an asset pair
@@ -333,7 +440,7 @@ export const stellarQueries = {
         spread,
       };
     },
-    staleTime: 10000, // 10 seconds
+    staleTime: 30_000, // 30s — matches trades freshness so asset page shows consistent data age
   }),
 
   // Top assets - fetch popular assets and enrich with data
@@ -378,8 +485,8 @@ export const stellarQueries = {
                 currentPrice = close;
                 priceChange24h = open > 0 ? ((close - open) / open) * 100 : 0;
               }
-            } catch {
-              // Trade data not available
+            } catch (err) {
+              console.warn(`[topAssets] trade data unavailable for ${code}-${issuer}:`, err);
             }
 
             // Calculate total accounts (authorized + authorized_to_maintain_liabilities)
@@ -398,7 +505,8 @@ export const stellarQueries = {
               currentPrice,
               flags: assetRecord.flags,
             };
-          } catch {
+          } catch (err) {
+            console.warn(`[topAssets] failed to load asset ${code}-${issuer}:`, err);
             return null;
           }
         })
@@ -417,7 +525,6 @@ export const stellarQueries = {
       const horizon = getHorizonClient(network);
       return horizon.feeStats();
     },
-    refetchInterval: LIVE_LEDGER_POLL_INTERVAL,
     staleTime: STALE_TIME,
   }),
 
@@ -595,6 +702,216 @@ export const stellarQueries = {
       };
     },
     staleTime: Infinity, // Contract code is immutable
+  }),
+
+  // Contract invocation history via Horizon (InvokeHostFunction operations)
+  contractInvocations: (network: NetworkKey, contractId: string, limit = DEFAULT_PAGE_SIZE) => ({
+    queryKey: stellarKeys.contractInvocations(network, contractId),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      const response = await horizon
+        .operations()
+        .forAccount(contractId)
+        .order("desc")
+        .limit(limit)
+        .call();
+      const invocations = response.records.filter(
+        (op) => (op as Horizon.ServerApi.BaseOperationRecord).type === "invoke_host_function"
+      );
+      return { records: invocations, total: response.records.length };
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Contract XLM balance (contracts with active accounts)
+  contractBalance: (network: NetworkKey, contractId: string) => ({
+    queryKey: stellarKeys.contractBalance(network, contractId),
+    queryFn: async () => {
+      try {
+        const horizon = getHorizonClient(network);
+        const account = await horizon.accounts().accountId(contractId).call();
+        const xlmBalance = account.balances.find(
+          (b: Horizon.HorizonApi.BalanceLine) => b.asset_type === "native"
+        );
+        return { balance: xlmBalance ? xlmBalance.balance : "0", exists: true };
+      } catch {
+        return { balance: "0", exists: false };
+      }
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Account offers (open DEX orders)
+  accountOffers: (network: NetworkKey, id: string, cursor?: string, limit = DEFAULT_PAGE_SIZE) => ({
+    queryKey: stellarKeys.accountOffers(network, id, cursor),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      let builder = horizon.offers().forAccount(id).order("desc").limit(limit);
+      if (cursor) builder = builder.cursor(cursor);
+      return builder.call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Last operations for a potentially-merged account (works even when account no longer exists)
+  accountLastOperations: (network: NetworkKey, id: string) => ({
+    queryKey: [...stellarKeys.account(network, id), "last_ops"],
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      return horizon.operations().forAccount(id).order("desc").limit(5).call();
+    },
+    staleTime: Infinity,
+    retry: 0,
+  }),
+
+  // Account data entries (decoded from base64)
+  accountDataEntries: (network: NetworkKey, id: string) => ({
+    queryKey: stellarKeys.accountDataEntries(network, id),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      const account = await horizon.accounts().accountId(id).call();
+      return Object.entries(account.data ?? {}).map(([key, value]) => ({
+        key,
+        value: Buffer.from(value, "base64").toString("utf-8"),
+        raw: value,
+      }));
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Liquidity pool by ID
+  liquidityPool: (network: NetworkKey, id: string) => ({
+    queryKey: stellarKeys.liquidityPool(network, id),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      return horizon.liquidityPools().liquidityPoolId(id).call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // List of liquidity pools with optional cursor
+  liquidityPoolsList: (network: NetworkKey, cursor?: string, limit = DEFAULT_PAGE_SIZE) => ({
+    queryKey: stellarKeys.liquidityPoolsList(network, cursor),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      let builder = horizon.liquidityPools().order("desc").limit(limit);
+      if (cursor) builder = builder.cursor(cursor);
+      return builder.call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Liquidity pools for a specific asset
+  assetLiquidityPools: (
+    network: NetworkKey,
+    code: string,
+    issuer: string,
+    limit = DEFAULT_PAGE_SIZE
+  ) => ({
+    queryKey: stellarKeys.assetLiquidityPools(network, code, issuer),
+    queryFn: async () => {
+      const { Asset } = await import("@stellar/stellar-sdk");
+      const horizon = getHorizonClient(network);
+      const asset = code === "XLM" ? Asset.native() : new Asset(code, issuer);
+      return horizon.liquidityPools().forAssets(asset).limit(limit).call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Transactions for a liquidity pool
+  liquidityPoolTransactions: (network: NetworkKey, id: string, limit = DEFAULT_PAGE_SIZE) => ({
+    queryKey: stellarKeys.liquidityPoolTransactions(network, id),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      return horizon.transactions().forLiquidityPool(id).order("desc").limit(limit).call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Claimable balances list (optionally filtered by asset)
+  claimableBalancesList: (
+    network: NetworkKey,
+    assetCode?: string,
+    assetIssuer?: string,
+    cursor?: string,
+    limit = DEFAULT_PAGE_SIZE
+  ) => ({
+    queryKey: stellarKeys.claimableBalancesList(network, assetCode, assetIssuer, cursor),
+    queryFn: async () => {
+      const horizon = getHorizonClient(network);
+      let builder = horizon.claimableBalances().limit(limit);
+      if (assetCode && assetIssuer) {
+        const { Asset } = await import("@stellar/stellar-sdk");
+        const asset = assetCode === "XLM" ? Asset.native() : new Asset(assetCode, assetIssuer);
+        builder = builder.asset(asset);
+      }
+      if (cursor) builder = builder.cursor(cursor);
+      return builder.call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Claimable balances for a specific asset
+  assetClaimableBalances: (
+    network: NetworkKey,
+    code: string,
+    issuer: string,
+    limit = DEFAULT_PAGE_SIZE
+  ) => ({
+    queryKey: stellarKeys.assetClaimableBalances(network, code, issuer),
+    queryFn: async () => {
+      const { Asset } = await import("@stellar/stellar-sdk");
+      const horizon = getHorizonClient(network);
+      const asset = code === "XLM" ? Asset.native() : new Asset(code, issuer);
+      return horizon.claimableBalances().asset(asset).limit(limit).call();
+    },
+    staleTime: STALE_TIME,
+  }),
+
+  // Soroban RPC network info (network passphrase, protocol version from RPC)
+  rpcNetworkInfo: (network: NetworkKey) => ({
+    queryKey: stellarKeys.rpcNetworkInfo(network),
+    queryFn: async () => {
+      const rpcClient = getRpcClient(network);
+      return rpcClient.getNetwork();
+    },
+    staleTime: Infinity,
+  }),
+
+  // Stellar Expert: full asset analytics (public network only)
+  assetAnalytics: (network: NetworkKey, code: string, issuer: string) => ({
+    queryKey: stellarKeys.assetAnalytics(network, code, issuer),
+    queryFn: (): Promise<StellarExpertResult<StellarExpertAssetAnalytics>> =>
+      fetchStellarExpert<StellarExpertAssetAnalytics>(network, `asset/${code}-${issuer}`),
+    staleTime: 5 * 60_000,
+    retry: 1,
+  }),
+
+  // Stellar Expert: account profile with creation date and totals (public network only)
+  accountProfile: (network: NetworkKey, id: string) => ({
+    queryKey: stellarKeys.accountProfile(network, id),
+    queryFn: (): Promise<StellarExpertResult<StellarExpertAccountProfile>> =>
+      fetchStellarExpert<StellarExpertAccountProfile>(network, `account/${id}`),
+    staleTime: 5 * 60_000,
+    retry: 1,
+  }),
+
+  // Stellar Expert: network activity history (public network only)
+  networkActivity: (network: NetworkKey) => ({
+    queryKey: stellarKeys.networkActivity(network),
+    queryFn: (): Promise<StellarExpertResult<StellarExpertNetworkActivity>> =>
+      fetchStellarExpert<StellarExpertNetworkActivity>(network, "network-activity"),
+    staleTime: 30 * 60_000,
+    retry: 1,
+  }),
+
+  // Stellar Expert: global network stats (public network only)
+  networkStats: (network: NetworkKey) => ({
+    queryKey: stellarKeys.networkStats(network),
+    queryFn: (): Promise<StellarExpertResult<StellarExpertNetworkStats>> =>
+      fetchStellarExpert<StellarExpertNetworkStats>(network, "stats"),
+    staleTime: 30 * 60_000,
+    retry: 1,
   }),
 
   contractStorage: (network: NetworkKey, contractId: string) => ({

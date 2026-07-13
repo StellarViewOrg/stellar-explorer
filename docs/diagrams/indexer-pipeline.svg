@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="262" viewBox="0 0 900 262"
+  font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+  role="img" aria-label="Stellar Explorer indexer pipeline diagram">
+  <title>Stellar Explorer — Indexer Pipeline</title>
+
+  <defs>
+    <filter id="card-shadow" x="-8%" y="-8%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.07"/>
+    </filter>
+
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0,10 3.5,0 7" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <!-- ── Background ── -->
+  <rect width="900" height="262" fill="#F8FAFC" rx="14"/>
+
+  <!-- ── Title ── -->
+  <text x="450" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A" letter-spacing="-0.2">
+    Indexer Pipeline
+  </text>
+
+
+  <!-- ════════════════════════════════════════
+       5 pipeline nodes — equal width (148px), 30px gaps, 20px side margins
+       y: 44 → 224  (height 180)  center_y: 134
+       ════════════════════════════════════════ -->
+
+  <!-- ── Node 1: Data Sources ── -->
+  <rect x="20" y="44" width="148" height="180" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5" filter="url(#card-shadow)"/>
+  <text x="94" y="67" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4ED8">Data Sources</text>
+  <line x1="32" y1="76" x2="156" y2="76" stroke="#DBEAFE" stroke-width="1"/>
+  <text x="94" y="96" text-anchor="middle" font-size="11" fill="#334155" font-weight="600">Stellar Network</text>
+  <text x="94" y="113" text-anchor="middle" font-size="10.5" fill="#475569">Horizon API</text>
+  <text x="94" y="130" text-anchor="middle" font-size="10.5" fill="#475569">Soroban RPC</text>
+  <line x1="32" y1="143" x2="156" y2="143" stroke="#DBEAFE" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="94" y="163" text-anchor="middle" font-size="11" fill="#334155" font-weight="600">AWS S3 Lake</text>
+  <text x="94" y="180" text-anchor="middle" font-size="10.5" fill="#475569">public history</text>
+  <text x="94" y="197" text-anchor="middle" font-size="10.5" fill="#475569">60M+ ledgers</text>
+  <text x="94" y="215" text-anchor="middle" font-size="9.5" fill="#93C5FD">no auth needed</text>
+
+  <!-- ── Arrow 1→2 ── -->
+  <line x1="168" y1="134" x2="198" y2="134" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="183" y="127" text-anchor="middle" font-size="8.5" fill="#64748B">fetch</text>
+
+  <!-- ── Node 2: Source Layer ── -->
+  <rect x="198" y="44" width="148" height="180" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5" filter="url(#card-shadow)"/>
+  <text x="272" y="67" text-anchor="middle" font-size="12" font-weight="700" fill="#0C4A6E">Source Layer</text>
+  <line x1="210" y1="76" x2="334" y2="76" stroke="#BAE6FD" stroke-width="1"/>
+  <text x="272" y="96" text-anchor="middle" font-size="10.5" fill="#475569" font-style="italic">source/rpc.go</text>
+  <text x="272" y="113" text-anchor="middle" font-size="10" fill="#7DD3FC">JSON-RPC 2.0</text>
+  <text x="272" y="130" text-anchor="middle" font-size="10" fill="#7DD3FC">live · backfill</text>
+  <line x1="210" y1="143" x2="334" y2="143" stroke="#BAE6FD" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="272" y="163" text-anchor="middle" font-size="10.5" fill="#475569" font-style="italic">source/datalake.go</text>
+  <text x="272" y="180" text-anchor="middle" font-size="10" fill="#7DD3FC">S3 public bucket</text>
+  <text x="272" y="197" text-anchor="middle" font-size="10" fill="#7DD3FC">s3backfill</text>
+  <text x="272" y="215" text-anchor="middle" font-size="9.5" fill="#7DD3FC">pubnet only</text>
+
+  <!-- ── Arrow 2→3 ── -->
+  <line x1="346" y1="134" x2="376" y2="134" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="361" y="127" text-anchor="middle" font-size="8.5" fill="#64748B">raw XDR</text>
+
+  <!-- ── Node 3: Transform ── -->
+  <rect x="376" y="44" width="148" height="180" rx="10" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.5" filter="url(#card-shadow)"/>
+  <text x="450" y="67" text-anchor="middle" font-size="12" font-weight="700" fill="#5B21B6">transform/</text>
+  <line x1="388" y1="76" x2="512" y2="76" stroke="#EDE9FE" stroke-width="1"/>
+  <text x="450" y="97" text-anchor="middle" font-size="10.5" fill="#475569">XDR decoding</text>
+  <text x="450" y="116" text-anchor="middle" font-size="10.5" fill="#475569">Ledgers</text>
+  <text x="450" y="135" text-anchor="middle" font-size="10.5" fill="#475569">Transactions</text>
+  <text x="450" y="154" text-anchor="middle" font-size="10.5" fill="#475569">Operations</text>
+  <text x="450" y="173" text-anchor="middle" font-size="10.5" fill="#475569">Events</text>
+  <text x="450" y="215" text-anchor="middle" font-size="9.5" fill="#A78BFA">typed Go models</text>
+
+  <!-- ── Arrow 3→4 ── -->
+  <line x1="524" y1="134" x2="554" y2="134" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="539" y="127" text-anchor="middle" font-size="8.5" fill="#64748B">models</text>
+
+  <!-- ── Node 4: Persist & Publish ── -->
+  <rect x="554" y="44" width="148" height="180" rx="10" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1.5" filter="url(#card-shadow)"/>
+  <text x="628" y="67" text-anchor="middle" font-size="12" font-weight="700" fill="#166534">Persist &amp; Publish</text>
+  <line x1="566" y1="76" x2="690" y2="76" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="628" y="96" text-anchor="middle" font-size="10.5" fill="#475569" font-style="italic">store/postgres.go</text>
+  <text x="628" y="113" text-anchor="middle" font-size="10" fill="#4ADE80">Batch inserts</text>
+  <text x="628" y="130" text-anchor="middle" font-size="10" fill="#4ADE80">Ingestion cursor</text>
+  <line x1="566" y1="143" x2="690" y2="143" stroke="#BBF7D0" stroke-width="1" stroke-opacity="0.7"/>
+  <text x="628" y="163" text-anchor="middle" font-size="10.5" fill="#475569" font-style="italic">publisher/redis.go</text>
+  <text x="628" y="180" text-anchor="middle" font-size="10" fill="#4ADE80">Real-time pub/sub</text>
+  <text x="628" y="197" text-anchor="middle" font-size="10" fill="#4ADE80">stream:ledgers</text>
+  <text x="628" y="215" text-anchor="middle" font-size="10" fill="#4ADE80">stream:transactions</text>
+
+  <!-- ── Arrow 4→5 ── -->
+  <line x1="702" y1="134" x2="732" y2="134" stroke="#94A3B8" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="717" y="127" text-anchor="middle" font-size="8.5" fill="#64748B">write</text>
+
+  <!-- ── Node 5: Data Stores ── -->
+  <rect x="732" y="44" width="148" height="180" rx="10" fill="#FEFCE8" stroke="#FDE68A" stroke-width="1.5" filter="url(#card-shadow)"/>
+  <text x="806" y="67" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Data Stores</text>
+  <line x1="744" y1="76" x2="868" y2="76" stroke="#FDE68A" stroke-width="1"/>
+  <text x="806" y="96" text-anchor="middle" font-size="11" fill="#334155" font-weight="600">PostgreSQL</text>
+  <text x="806" y="113" text-anchor="middle" font-size="10.5" fill="#475569">+ TimescaleDB</text>
+  <text x="806" y="130" text-anchor="middle" font-size="9.5" fill="#D97706">time-series · batch reads</text>
+  <line x1="744" y1="143" x2="868" y2="143" stroke="#FDE68A" stroke-width="1" stroke-opacity="0.7"/>
+  <text x="806" y="163" text-anchor="middle" font-size="11" fill="#334155" font-weight="600">Redis pub/sub</text>
+  <text x="806" y="180" text-anchor="middle" font-size="10" fill="#D97706">stream:ledgers</text>
+  <text x="806" y="197" text-anchor="middle" font-size="10" fill="#D97706">stream:transactions</text>
+  <line x1="744" y1="208" x2="868" y2="208" stroke="#FDE68A" stroke-width="1" stroke-opacity="0.7"/>
+  <text x="806" y="222" text-anchor="middle" font-size="10.5" fill="#475569">Typesense</text>
+</svg>

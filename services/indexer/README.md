@@ -12,7 +12,7 @@ Go service that ingests Stellar network data (ledgers, transactions, operations)
 docker compose -f infra/docker-compose.yml up -d
 ```
 
-This starts PostgreSQL+TimescaleDB (port 54320), Redis (port 63790), and Typesense (port 18108).
+This starts PostgreSQL+TimescaleDB (port 54320), Redis (port 63790), and Typesense (port 18108). Typesense is used for full-text search indexing of accounts, assets, and contracts — it is optional for basic ingestion but required for the search API surface.
 
 - Database migrations applied:
 
@@ -28,16 +28,17 @@ make build
 | -------------- | ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------- |
 | `RPC_ENDPOINT` | —                                                                                     | **Yes**  | Stellar RPC endpoint                                      |
 | `NETWORK`      | `public`                                                                              | No       | `public`, `testnet`, or `futurenet`                       |
-| `DATABASE_URL` | `postgresql://explorer:explorer_dev@localhost:54320/stellar_explorer?sslmode=disable` | No       | PostgreSQL connection                                     |
+| `DATABASE_URL` | `postgresql://explorer:explorer_dev@localhost:54320/stellar_explorer?sslmode=disable` | No       | PostgreSQL connection. Change `sslmode=disable` to `sslmode=require` in production. |
 | `REDIS_URL`    | `redis://localhost:63790`                                                             | No       | Redis connection (optional — logs warning if unavailable) |
 | `BATCH_SIZE`   | `100`                                                                                 | No       | Ledgers per batch                                         |
-| `WORKER_COUNT` | `8`                                                                                   | No       | Parallel workers for backfill                             |
+| `WORKER_COUNT` | `8`                                                                                   | No       | Parallel workers for `backfill` and `s3backfill`          |
 
 ## Commands
 
 ```bash
 make build          # Compile to bin/indexer
 make migrate        # Apply pending database migrations
+make run-live       # Live ingestion (requires RPC_ENDPOINT env var)
 make test           # Run all tests
 make fmt            # Format code
 make lint           # Run go vet
@@ -69,6 +70,8 @@ Processes a range of ledgers using parallel workers. Works with any network (pub
 ```bash
 RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet ./bin/indexer backfill --start 1288000 --end 1288100
 ```
+
+**Resume support** — if interrupted, re-run with `--start` set to the last successfully ingested ledger and the indexer will pick up from there.
 
 ### S3 data lake backfill (pubnet only)
 
@@ -141,7 +144,8 @@ To wipe all ingested data and start fresh (useful after testing with different n
 
 ```bash
 docker compose -f infra/docker-compose.yml exec postgres psql -U explorer -d stellar_explorer -c "
-  TRUNCATE ledgers, transactions, operations, ingestion_state CASCADE;
+  TRUNCATE ledgers, transactions, operations, effects, accounts, contracts,
+    contract_events, token_events, assets, trades, network_stats, ingestion_state CASCADE;
 "
 ```
 

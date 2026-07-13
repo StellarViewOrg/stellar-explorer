@@ -149,9 +149,15 @@ function EventRow({ event }: { event: DecodedEvent }) {
   );
 }
 
-export function ContractEventDetails({ contractId }: { contractId: string }) {
+export function ContractEventDetails({
+  contractId,
+  live = false,
+}: {
+  contractId: string;
+  live?: boolean;
+}) {
   const t = useTranslations("contract");
-  const { data, isLoading, error, refetch } = useContractEvents(contractId);
+  const { data, isLoading, error, refetch } = useContractEvents(contractId, undefined, live);
 
   if (isLoading) {
     return <LoadingCard rows={5} />;
