@@ -31,6 +31,7 @@ The app is **live today**, powered entirely by the Stellar Horizon API and Sorob
 ## Architecture
 
 ![System Architecture](./docs/diagrams/architecture.svg)
+> Own elaboration
 
 The Explorer Web app reads live data directly from the **Stellar Horizon API** and **Soroban RPC** — no intermediate backend required. The **Custom Indexer** (currently in development) will enrich both the TUI and future web analytics with historical depth and real-time streaming.
 
@@ -45,7 +46,7 @@ The **Stellar Explorer Indexer** is a Go service that ingests Stellar network da
 ### Pipeline
 
 ![Indexer Pipeline](./docs/diagrams/indexer-pipeline.svg)
-
+> Own elaboration
 Once fully deployed, the indexer will power:
 
 - **Full historical coverage** — from ledger 3 to present (60M+ ledgers on pubnet)
