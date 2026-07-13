@@ -10,9 +10,15 @@
 
 Stellar Explorer gives you a fast, clean window into the Stellar blockchain. Browse ledgers, transactions, accounts, assets, and Soroban smart contracts across **Public**, **Testnet**, and **Futurenet** — all in one place.
 
-The app is **live today**, powered entirely by the Stellar Horizon API and Soroban RPC. We're also building a custom **indexer** that will bring historical depth, richer analytics, and a broader data panorama that the Horizon API alone can't provide.
+The app is **live today**, powered entirely by the Stellar Horizon API and Soroban RPC.
 
-**TUI** brings Stellar Explorer into the terminal as a functional alpha client, offering a keyboard-driven way to investigate Stellar activity, monitor live data, keep local notes/bookmarks/labels, and move through indexed network context with the dedicated `services/tui-indexer` backend.
+This repository holds the **web app** only. Stellar Explorer also ships a custom indexer and a terminal client, each in their own repository:
+
+| Repo | What it is |
+| --- | --- |
+| [`StellarViewOrg/indexer`](https://github.com/StellarViewOrg/indexer) | Go service that ingests Stellar network data into PostgreSQL/TimescaleDB, with real-time event publishing via Redis |
+| [`StellarViewOrg/tui`](https://github.com/StellarViewOrg/tui) | Terminal client (alpha) plus its dedicated `tui-indexer` backend |
+| [`StellarViewOrg/docs`](https://github.com/StellarViewOrg/docs) | Astro/Starlight documentation site |
 
 ### Features
 
@@ -33,78 +39,11 @@ The app is **live today**, powered entirely by the Stellar Horizon API and Sorob
 ![System Architecture](./docs/diagrams/architecture.svg)
 > Own elaboration
 
-The Explorer Web app reads live data directly from the **Stellar Horizon API** and **Soroban RPC** — no intermediate backend required. The **Custom Indexer** (currently in development) will enrich both the TUI and future web analytics with historical depth and real-time streaming.
-
----
-
-## The Indexer — Expanding Our Data Horizon
-
-The Horizon API is great for recent data, but it has limits: no deep historical coverage, no custom aggregations, and no way to serve analytics at scale. That's where the indexer comes in.
-
-The **Stellar Explorer Indexer** is a Go service that ingests Stellar network data — ledgers, transactions, and operations — into **PostgreSQL + TimescaleDB**, with real-time event publishing via **Redis**.
-
-### Pipeline
-
-![Indexer Pipeline](./docs/diagrams/indexer-pipeline.svg)
-> Own elaboration
-Once fully deployed, the indexer will power:
-
-- **Full historical coverage** — from ledger 3 to present (60M+ ledgers on pubnet)
-- **Richer analytics** — charts and aggregations that live APIs can't support
-- **Full-text search** — powered by Typesense
-- **Real-time event streams** — Redis pub/sub for live updates
-
-### Three Ingestion Modes
-
----
-
-#### `live` — Real-time Ingestion
-
-Continuously polls the Stellar RPC for new ledgers and ingests them as they close (~1 ledger every 5 seconds). Designed to run indefinitely in production.
-
-```bash
-RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet make run-live
-```
-
-Shuts down gracefully on `Ctrl+C` and resumes from the last ingested ledger on restart — no duplicates, no gaps.
-
----
-
-#### `backfill` — Historical Backfill via RPC
-
-Processes a specific range of ledgers in parallel. Works on any network (pubnet, testnet, futurenet). Ideal for catching up after a gap or indexing a targeted range.
-
-```bash
-RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet \
-  ./bin/indexer backfill --start 1288000 --end 1288100
-```
-
-Controlled by `WORKER_COUNT` (default: 8) for parallel throughput.
-
----
-
-#### `s3backfill` — Mass Historical Backfill from AWS Data Lake
-
-The fastest way to index the entire Stellar pubnet history. Reads directly from the [Stellar public AWS data lake](https://github.com/stellar/stellar-etl) — no RPC endpoint and no AWS credentials required. Covers ledger 3 through the latest pubnet ledger (60M+).
-
-```bash
-# Index a million ledgers
-./bin/indexer s3backfill --start 3 --end 1000000
-
-# Resume from a checkpoint
-./bin/indexer s3backfill --start 500001 --end 1000000
-
-# Crank up workers for maximum throughput
-WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
-```
-
-> **Note:** `s3backfill` is pubnet-only. For testnet/futurenet historical data, use `backfill` with an RPC endpoint.
+The Explorer Web app reads live data directly from the **Stellar Horizon API** and **Soroban RPC** — no intermediate backend required. The **Custom Indexer** (see [`StellarViewOrg/indexer`](https://github.com/StellarViewOrg/indexer)) enriches the TUI and future web analytics with historical depth and real-time streaming.
 
 ---
 
 ## Tech Stack
-
-**Frontend**
 
 | Technology | Role |
 | --- | --- |
@@ -114,36 +53,19 @@ WORKER_COUNT=16 ./bin/indexer s3backfill --start 3 --end 5000000
 | [Stellar SDK](https://stellar.github.io/js-stellar-sdk/) | Stellar protocol access |
 | [Bun](https://bun.sh/) | Package manager and runtime |
 
-**Indexer**
-
-| Technology | Role |
-| --- | --- |
-| [Go 1.24](https://go.dev/) | Service runtime |
-| [PostgreSQL](https://www.postgresql.org/) + [TimescaleDB](https://www.timescale.com/) | Time-series storage |
-| [Redis](https://redis.io/) | Real-time pub/sub |
-| [Typesense](https://typesense.org/) | Full-text search |
-
 ---
 
-## Monorepo Structure
+## Repo Structure
 
 ```text
 stellar-explorer/
 ├── apps/
-│   ├── explorer-web/   # Next.js explorer frontend
-│   ├── docs/           # Astro/Starlight documentation site
-│   └── tui/            # Go terminal client for Stellar investigation
-├── services/
-│   ├── indexer/        # Stable Go ingestion/indexing service
-│   └── tui-indexer/    # Dedicated backend for terminal workflows
+│   └── explorer-web/   # Next.js explorer frontend
 ├── docs/
-│   └── diagrams/       # Architecture SVG diagrams
-├── infra/
-│   ├── docker/         # Local infrastructure files
-│   └── docker-compose.yml
+│   └── diagrams/       # Architecture SVG diagrams referenced by this README
 ├── .github/            # CI workflows
 ├── package.json        # Bun workspace root
-└── bun.lock            # Shared dependency lockfile
+└── bun.lock            # Dependency lockfile
 ```
 
 ---
@@ -159,48 +81,7 @@ bun run dev:web        # Start frontend at http://localhost:3000
 
 That's it. The frontend runs fully against the public Horizon API — no local backend required.
 
-### TUI — Terminal Client
-
-```bash
-bun run tui:build      # Build the Go terminal client
-bun run tui:run        # Launch the terminal interface
-```
-
-See [`apps/tui/README.md`](./apps/tui/README.md) for configuration, profiles, and hybrid mode setup.
-
-### Indexer
-
-Requires Docker Compose running first:
-
-```bash
-# Start PostgreSQL, Redis, and Typesense
-docker compose -f infra/docker-compose.yml up -d
-
-# Apply database migrations and build
-cd services/indexer && make migrate && make build
-
-# Run live ingestion against testnet
-RPC_ENDPOINT=https://soroban-testnet.stellar.org NETWORK=testnet make run-live
-```
-
-See [`services/indexer/README.md`](./services/indexer/README.md) for the full configuration reference.
-
-### TUI Indexer (hybrid backend)
-
-```bash
-bun run tui-indexer:infra:up    # Start isolated Docker services
-bun run tui-indexer:migrate     # Apply migrations
-bun run tui-indexer:run:serve   # Start the read API
-```
-
-See [`services/tui-indexer/README.md`](./services/tui-indexer/README.md) for the dedicated backend that enriches the TUI with indexed reads, search, timelines, and live-feed data.
-
-### Docs Site
-
-```bash
-bun run dev:docs       # Start the documentation site
-bun run build:docs     # Production build
-```
+For the indexer, TUI, or docs site, see their dedicated repos linked above — each has its own setup instructions.
 
 ---
 
@@ -210,17 +91,9 @@ bun run build:docs     # Production build
 | --- | --- |
 | `bun run dev:web` | Start frontend development server |
 | `bun run build:web` | Build the frontend |
-| `bun run tui:build` | Build the Go terminal client |
-| `bun run tui:run` | Run the Go terminal client |
-| `bun run tui:test` | Run TUI tests |
-| `bun run dev:docs` | Start the documentation site |
-| `bun run build:docs` | Build the documentation site |
-| `bun run indexer:build` | Build the stable Go indexer |
-| `bun run indexer:test` | Run stable indexer tests |
-| `bun run tui-indexer:build` | Build the dedicated TUI backend |
-| `bun run tui-indexer:test` | Run TUI backend tests |
-| `bun run tui-indexer:run:live` | Run the TUI backend in live mode |
-| `bun run tui-indexer:infra:up` | Start isolated Docker services for `tui-indexer` |
+| `bun run lint:web` | Lint the frontend |
+| `bun run test:web` | Run frontend tests |
+| `bun run format:web` | Format the frontend |
 
 ---
 
@@ -237,8 +110,6 @@ Point the Vercel project to `apps/explorer-web` as the Root Directory. This isol
 | Install Command | _(leave default — Vercel detects the Bun workspace)_ |
 | Build Command | `bun run build` |
 | Output Directory | _(leave empty)_ |
-
-If you deploy the docs on a separate Vercel project, use `apps/docs` as its Root Directory.
 
 ---
 

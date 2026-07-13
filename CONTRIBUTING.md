@@ -16,22 +16,18 @@ Thank you for your interest in contributing. This guide covers the essentials fo
    bun run dev:web   # http://localhost:3000
    ```
 
-For services that require local infrastructure (Indexer, TUI backend), see the relevant service README:
+This repository holds the **web app** only. The indexer, TUI, and docs site each live in their own repo with their own contributing guide:
 
-- [`services/indexer/README.md`](./services/indexer/README.md)
-- [`services/tui-indexer/README.md`](./services/tui-indexer/README.md)
-- [`apps/tui/README.md`](./apps/tui/README.md)
+- [`StellarViewOrg/indexer`](https://github.com/StellarViewOrg/indexer)
+- [`StellarViewOrg/tui`](https://github.com/StellarViewOrg/tui)
+- [`StellarViewOrg/docs`](https://github.com/StellarViewOrg/docs)
 
 ---
 
 ## Project structure
 
 ```text
-apps/explorer-web/     # Next.js frontend (primary contribution target)
-apps/tui/              # Go terminal client
-services/indexer/      # Go indexer service
-services/tui-indexer/  # Go TUI backend
-apps/docs/             # Astro/Starlight documentation site
+apps/explorer-web/     # Next.js frontend (the only app in this repo)
 ```
 
 ---
@@ -52,8 +48,6 @@ Prettier config: double quotes, semicolons, 100-char line width, trailing commas
 
 ```bash
 bun run test           # Run all frontend tests (Vitest)
-bun run tui:test       # TUI tests (no infra required)
-bun run indexer:test   # Indexer tests (requires Docker services)
 ```
 
 Tests use the `happy-dom` environment. Place test files alongside source as `*.test.{ts,tsx}`.
