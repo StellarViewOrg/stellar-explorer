@@ -37,6 +37,7 @@ This repository holds the **web app** only. Stellar Explorer also ships a custom
 ## Architecture
 
 ![System Architecture](./docs/diagrams/architecture.svg)
+> Own elaboration
 
 The Explorer Web app reads live data directly from the **Stellar Horizon API** and **Soroban RPC** — no intermediate backend required. The **Custom Indexer** (see [`StellarViewOrg/indexer`](https://github.com/StellarViewOrg/indexer)) enriches the TUI and future web analytics with historical depth and real-time streaming.
 
