@@ -41,7 +41,7 @@ export function Header() {
         <Link href="/" className="group flex items-center gap-2.5 font-semibold md:hidden">
           <Image
             src="/stellar-explorer.png"
-            alt="Stellar Explorer"
+            alt="StellarView Explorer"
             width={32}
             height={32}
             className="rounded-lg"

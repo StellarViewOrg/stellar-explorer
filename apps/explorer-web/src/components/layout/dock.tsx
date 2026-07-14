@@ -130,7 +130,7 @@ export function Dock() {
         {/* Logo */}
         <Link href="/" className="mb-6 flex items-center justify-center">
           <div className="size-9 overflow-hidden rounded-xl transition-transform duration-200 hover:scale-105">
-            <Image src="/stellar-explorer.png" alt="Stellar Explorer" width={36} height={36} />
+            <Image src="/stellar-explorer.png" alt="StellarView Explorer" width={36} height={36} />
           </div>
         </Link>
 

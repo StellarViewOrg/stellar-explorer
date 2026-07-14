@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Stellar Explorer";
+export const alt = "StellarView Explorer";
 export const size = {
   width: 1200,
   height: 630,
@@ -10,7 +10,7 @@ export const contentType = "image/png";
 export default async function Image({ params }: { params: { locale: string } }) {
   const locale = params.locale || "en";
 
-  const title = locale === "es" ? "Explorador Stellar" : "Stellar Explorer";
+  const title = locale === "es" ? "StellarView Explorer" : "StellarView Explorer";
   const subtitle =
     locale === "es"
       ? "Explora la red Stellar en tiempo real"

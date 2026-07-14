@@ -147,7 +147,7 @@ async function exportPDF(
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
   doc.setTextColor(10, 10, 10);
-  doc.text("Stellar Explorer", lx + (logoDataUrl ? logoSize + 2 : 0), ly + 6);
+  doc.text("StellarView Explorer", lx + (logoDataUrl ? logoSize + 2 : 0), ly + 6);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);

@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: isNative ? "Stellar Lumens (XLM)" : `${code} - Stellar Asset`,
       description: isNative
         ? "Native asset of the Stellar network"
-        : `View ${code} asset details on Stellar Explorer`,
+        : `View ${code} asset details on StellarView Explorer`,
       type: "website",
     },
     twitter: {
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: isNative ? "Stellar Lumens (XLM)" : `${code} - Stellar Asset`,
       description: isNative
         ? "Native asset of the Stellar network"
-        : `View ${code} asset details on Stellar Explorer`,
+        : `View ${code} asset details on StellarView Explorer`,
     },
   };
 }

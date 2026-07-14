@@ -145,7 +145,7 @@ export default async function Image({ params }: { params: { slug: string; locale
         </div>
       </div>
 
-      {/* Stellar Explorer branding */}
+      {/* StellarView Explorer branding */}
       <div
         style={{
           position: "absolute",
@@ -177,7 +177,7 @@ export default async function Image({ params }: { params: { slug: string; locale
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
         </div>
-        <span style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 18 }}>Stellar Explorer</span>
+        <span style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 18 }}>StellarView Explorer</span>
       </div>
 
       {/* Bottom gradient */}

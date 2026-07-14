@@ -1,4 +1,4 @@
-# Contributing to Stellar Explorer
+# Contributing to StellarView Explorer
 
 Thank you for your interest in contributing. This guide covers the essentials for getting your changes merged.
 

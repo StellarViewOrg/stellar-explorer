@@ -20,13 +20,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: `View details of Stellar transaction ${shortHash}. Explore operations, effects, and raw XDR data.`,
     openGraph: {
       title: `Stellar Transaction ${shortHash}`,
-      description: `View transaction details on Stellar Explorer`,
+      description: `View transaction details on StellarView Explorer`,
       type: "website",
     },
     twitter: {
       card: "summary",
       title: `Stellar Transaction ${shortHash}`,
-      description: `View transaction details on Stellar Explorer`,
+      description: `View transaction details on StellarView Explorer`,
     },
   };
 }

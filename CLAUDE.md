@@ -20,7 +20,7 @@ Tests use happy-dom environment. Test files live alongside source as `*.test.{ts
 
 ## Architecture
 
-Stellar Explorer is a Next.js 16 App Router application that provides a blockchain explorer for the Stellar network. It uses Bun as its package manager.
+StellarView Explorer is a Next.js 16 App Router application that provides a blockchain explorer for the Stellar network. It uses Bun as its package manager.
 
 ### Routing: `src/app/[locale]/[network]/(explorer)/...`
 
