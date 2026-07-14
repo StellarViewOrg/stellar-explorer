@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar View | Stellar Explorer",
-    "description": "Stellar View 是开源的 Stellar Explorer — 浏览 Stellar 网络上的账本、交易、账户、资产和 Soroban 智能合约。支持主网、测试网和 Futurenet。",
-    "brand": "Stellar View"
+    "title": "StellarView Explorer",
+    "description": "StellarView 是开源的 Stellar Explorer — 浏览 Stellar 网络上的账本、交易、账户、资产和 Soroban 智能合约。支持主网、测试网和 Futurenet。",
+    "brand": "StellarView"
   },
   "navigation": {
     "overview": "概览",
@@ -97,7 +97,7 @@
     "contractsDesc": "探索 Soroban"
   },
   "transactions": {
-    "metaTitle": "交易 | Stellar Explorer",
+    "metaTitle": "交易 | StellarView Explorer",
     "metaDescription": "浏览 Stellar 网络上的最近交易。查看交易详情、操作等。",
     "title": "交易",
     "recentTransactions": "最近交易",
@@ -106,7 +106,7 @@
     "noRecentFound": "此网络未找到最近交易。"
   },
   "ledgers": {
-    "metaTitle": "账本 | Stellar Explorer",
+    "metaTitle": "账本 | StellarView Explorer",
     "metaDescription": "浏览 Stellar 网络上的账本历史。搜索和探索各个账本。",
     "title": "账本",
     "searchLedger": "搜索账本",
@@ -130,7 +130,7 @@
     "accountsDescription": "输入 Stellar 地址以查看账户详情、余额、交易和签名者信息。"
   },
   "assets": {
-    "metaTitle": "资产 | Stellar Explorer",
+    "metaTitle": "资产 | StellarView Explorer",
     "metaDescription": "探索 Stellar 网络上的资产。查看热门资产，按代码或发行方搜索。",
     "title": "资产",
     "subtitle": "探索 Stellar 网络上的代币和资产",
@@ -159,7 +159,7 @@
     "price": "价格"
   },
   "contracts": {
-    "metaTitle": "智能合约 | Stellar Explorer",
+    "metaTitle": "智能合约 | StellarView Explorer",
     "metaDescription": "探索 Stellar 网络上的 Soroban 智能合约。搜索和查看合约详情。",
     "title": "智能合约",
     "subtitle": "探索 Stellar 网络上的 Soroban 智能合约",

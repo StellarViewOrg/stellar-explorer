@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar View | Stellar Explorer",
-    "description": "Stellar View はオープンソースの Stellar Explorer です。Stellar ネットワーク上の台帳、トランザクション、アカウント、資産、Soroban スマートコントラクトを閲覧できます。Mainnet・Testnet・Futurenet 対応。",
-    "brand": "Stellar View"
+    "title": "StellarView Explorer",
+    "description": "StellarView はオープンソースの Stellar Explorer です。Stellar ネットワーク上の台帳、トランザクション、アカウント、資産、Soroban スマートコントラクトを閲覧できます。Mainnet・Testnet・Futurenet 対応。",
+    "brand": "StellarView"
   },
   "navigation": {
     "overview": "概要",
@@ -97,7 +97,7 @@
     "contractsDesc": "Sorobanを探索"
   },
   "transactions": {
-    "metaTitle": "トランザクション | Stellar Explorer",
+    "metaTitle": "トランザクション | StellarView Explorer",
     "metaDescription": "Stellarネットワーク上の最近のトランザクションを閲覧。トランザクションの詳細、操作などを表示。",
     "title": "トランザクション",
     "recentTransactions": "最近のトランザクション",
@@ -106,7 +106,7 @@
     "noRecentFound": "このネットワークで最近のトランザクションは見つかりませんでした。"
   },
   "ledgers": {
-    "metaTitle": "レジャー | Stellar Explorer",
+    "metaTitle": "レジャー | StellarView Explorer",
     "metaDescription": "Stellarネットワーク上のレジャー履歴を閲覧。個々のレジャーを検索・探索。",
     "title": "レジャー",
     "searchLedger": "レジャーを検索",
@@ -130,7 +130,7 @@
     "accountsDescription": "Stellarアドレスを入力して、アカウント詳細、残高、トランザクション、署名者情報を表示。"
   },
   "assets": {
-    "metaTitle": "アセット | Stellar Explorer",
+    "metaTitle": "アセット | StellarView Explorer",
     "metaDescription": "Stellarネットワーク上のアセットを探索。トップアセットを表示、コードや発行者で検索。",
     "title": "アセット",
     "subtitle": "Stellarネットワーク上のトークンとアセットを探索",
@@ -159,7 +159,7 @@
     "price": "価格"
   },
   "contracts": {
-    "metaTitle": "スマートコントラクト | Stellar Explorer",
+    "metaTitle": "スマートコントラクト | StellarView Explorer",
     "metaDescription": "Stellarネットワーク上のSorobanスマートコントラクトを探索。コントラクトの詳細を検索・表示。",
     "title": "スマートコントラクト",
     "subtitle": "Stellarネットワーク上のSorobanスマートコントラクトを探索",

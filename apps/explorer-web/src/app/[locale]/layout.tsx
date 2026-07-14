@@ -45,8 +45,8 @@ export async function generateMetadata({
     },
     description: description,
     keywords: [
-      "Stellar Explorer",
-      "Stellar View",
+      "StellarView Explorer",
+      "StellarView",
       "Stellar",
       "blockchain explorer",
       "block explorer",
@@ -62,7 +62,7 @@ export async function generateMetadata({
       "crypto explorer",
       "DeFi",
     ],
-    authors: [{ name: "Stellar View" }],
+    authors: [{ name: "StellarView" }],
     icons: {
       icon: "/stellar-explorer.png",
       apple: "/stellar-explorer.png",

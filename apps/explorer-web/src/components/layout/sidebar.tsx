@@ -55,7 +55,7 @@ export function Sidebar() {
         <Link href="/" className="group flex items-center gap-3">
           <Image
             src="/stellar-explorer.png"
-            alt="Stellar Explorer"
+            alt="StellarView Explorer"
             width={36}
             height={36}
             className="shrink-0 rounded-lg transition-transform duration-300 group-hover:scale-110"

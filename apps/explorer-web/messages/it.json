@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar View | Stellar Explorer",
-    "description": "Stellar View è uno Stellar Explorer open-source — esplora ledger, transazioni, account, asset e smart contract Soroban sulla rete Stellar. Supporta Mainnet, Testnet e Futurenet.",
-    "brand": "Stellar View"
+    "title": "StellarView Explorer",
+    "description": "StellarView è uno Stellar Explorer open-source — esplora ledger, transazioni, account, asset e smart contract Soroban sulla rete Stellar. Supporta Mainnet, Testnet e Futurenet.",
+    "brand": "StellarView"
   },
   "navigation": {
     "overview": "Panoramica",
@@ -97,7 +97,7 @@
     "contractsDesc": "Esplora Soroban"
   },
   "transactions": {
-    "metaTitle": "Transazioni | Stellar Explorer",
+    "metaTitle": "Transazioni | StellarView Explorer",
     "metaDescription": "Sfoglia le transazioni recenti sulla rete Stellar. Visualizza i dettagli delle transazioni, le operazioni e altro.",
     "title": "Transazioni",
     "recentTransactions": "Transazioni recenti",
@@ -106,7 +106,7 @@
     "noRecentFound": "Nessuna transazione recente trovata su questa rete."
   },
   "ledgers": {
-    "metaTitle": "Registri | Stellar Explorer",
+    "metaTitle": "Registri | StellarView Explorer",
     "metaDescription": "Sfoglia la cronologia dei registri sulla rete Stellar. Cerca ed esplora i singoli registri.",
     "title": "Registri",
     "searchLedger": "Cerca registro",
@@ -130,7 +130,7 @@
     "accountsDescription": "Inserisci un indirizzo Stellar per visualizzare i dettagli del conto, i saldi, le transazioni e le informazioni di firma."
   },
   "assets": {
-    "metaTitle": "Risorse | Stellar Explorer",
+    "metaTitle": "Risorse | StellarView Explorer",
     "metaDescription": "Esplora le risorse sulla rete Stellar. Visualizza le risorse principali, cerca per codice o emittente.",
     "title": "Risorse",
     "subtitle": "Esplora token e risorse sulla rete Stellar",
@@ -159,7 +159,7 @@
     "price": "Prezzo"
   },
   "contracts": {
-    "metaTitle": "Smart Contract | Stellar Explorer",
+    "metaTitle": "Smart Contract | StellarView Explorer",
     "metaDescription": "Esplora gli smart contract Soroban sulla rete Stellar. Cerca e visualizza i dettagli dei contratti.",
     "title": "Smart Contract",
     "subtitle": "Esplora gli smart contract Soroban sulla rete Stellar",
@@ -611,7 +611,7 @@
     "stellar": "Stellar"
   },
   "mobileNav": {
-    "stellarExplorer": "Stellar Explorer"
+    "stellarExplorer": "StellarView Explorer"
   },
   "accessibility": {
     "changeLanguage": "Cambia lingua"

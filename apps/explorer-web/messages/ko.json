@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Stellar View | Stellar Explorer",
-    "description": "Stellar View는 오픈소스 Stellar Explorer입니다. Stellar 네트워크의 원장, 트랜잭션, 계정, 자산 및 Soroban 스마트 컨트랙트를 탐색하세요. Mainnet, Testnet, Futurenet 지원.",
-    "brand": "Stellar View"
+    "title": "StellarView Explorer",
+    "description": "StellarView는 오픈소스 Stellar Explorer입니다. Stellar 네트워크의 원장, 트랜잭션, 계정, 자산 및 Soroban 스마트 컨트랙트를 탐색하세요. Mainnet, Testnet, Futurenet 지원.",
+    "brand": "StellarView"
   },
   "navigation": {
     "overview": "개요",
@@ -97,7 +97,7 @@
     "contractsDesc": "Soroban 탐색"
   },
   "transactions": {
-    "metaTitle": "트랜잭션 | Stellar Explorer",
+    "metaTitle": "트랜잭션 | StellarView Explorer",
     "metaDescription": "Stellar 네트워크의 최근 트랜잭션을 탐색하세요. 트랜잭션 세부 정보, 오퍼레이션 등을 확인하세요.",
     "title": "트랜잭션",
     "recentTransactions": "최근 트랜잭션",
@@ -106,7 +106,7 @@
     "noRecentFound": "이 네트워크에서 최근 트랜잭션을 찾을 수 없습니다."
   },
   "ledgers": {
-    "metaTitle": "원장 | Stellar Explorer",
+    "metaTitle": "원장 | StellarView Explorer",
     "metaDescription": "Stellar 네트워크의 원장 기록을 탐색하세요. 개별 원장을 검색하고 탐색하세요.",
     "title": "원장",
     "searchLedger": "원장 검색",
@@ -130,7 +130,7 @@
     "accountsDescription": "Stellar 주소를 입력하여 계정 상세 정보, 잔액, 트랜잭션 및 서명자 정보를 확인하세요."
   },
   "assets": {
-    "metaTitle": "자산 | Stellar Explorer",
+    "metaTitle": "자산 | StellarView Explorer",
     "metaDescription": "Stellar 네트워크의 자산을 탐색하세요. 상위 자산을 보고, 코드 또는 발행자로 검색하세요.",
     "title": "자산",
     "subtitle": "Stellar 네트워크의 토큰과 자산 탐색",
@@ -159,7 +159,7 @@
     "price": "가격"
   },
   "contracts": {
-    "metaTitle": "스마트 컨트랙트 | Stellar Explorer",
+    "metaTitle": "스마트 컨트랙트 | StellarView Explorer",
     "metaDescription": "Stellar 네트워크의 Soroban 스마트 컨트랙트를 탐색하세요. 컨트랙트 세부 정보를 검색하고 확인하세요.",
     "title": "스마트 컨트랙트",
     "subtitle": "Stellar 네트워크의 Soroban 스마트 컨트랙트 탐색",
@@ -611,7 +611,7 @@
     "stellar": "Stellar"
   },
   "mobileNav": {
-    "stellarExplorer": "Stellar Explorer"
+    "stellarExplorer": "StellarView Explorer"
   },
   "accessibility": {
     "changeLanguage": "언어 변경"

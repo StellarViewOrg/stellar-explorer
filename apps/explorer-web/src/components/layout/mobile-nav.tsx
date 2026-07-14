@@ -55,7 +55,7 @@ export function MobileNav() {
           <SheetTitle className="flex items-center gap-3">
             <Image
               src="/stellar-explorer.png"
-              alt="Stellar Explorer"
+              alt="StellarView Explorer"
               width={32}
               height={32}
               className="rounded-lg"

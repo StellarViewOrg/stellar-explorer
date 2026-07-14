@@ -1,4 +1,4 @@
-# Stellar View | Stellar Explorer
+# StellarView Explorer
 
 > A premium block explorer for the Stellar network — built for developers, traders, and ecosystem builders.
 
@@ -8,11 +8,11 @@
 
 ## Overview
 
-Stellar Explorer gives you a fast, clean window into the Stellar blockchain. Browse ledgers, transactions, accounts, assets, and Soroban smart contracts across **Public**, **Testnet**, and **Futurenet** — all in one place.
+StellarView Explorer gives you a fast, clean window into the Stellar blockchain. Browse ledgers, transactions, accounts, assets, and Soroban smart contracts across **Public**, **Testnet**, and **Futurenet** — all in one place.
 
 The app is **live today**, powered entirely by the Stellar Horizon API and Soroban RPC.
 
-This repository holds the **web app** only. Stellar Explorer also ships a custom indexer and a terminal client, each in their own repository:
+This repository holds the **web app** only. StellarView Explorer also ships a custom indexer and a terminal client, each in their own repository:
 
 | Repo | What it is |
 | --- | --- |
