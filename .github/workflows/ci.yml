@@ -3,18 +3,8 @@ name: Frontend CI
 on:
   push:
     branches: [ main, develop ]
-    paths:
-      - "apps/explorer-web/**"
-      - "package.json"
-      - "bun.lock"
-      - ".github/workflows/ci.yml"
   pull_request:
     branches: [ main, develop ]
-    paths:
-      - "apps/explorer-web/**"
-      - "package.json"
-      - "bun.lock"
-      - ".github/workflows/ci.yml"
 
 jobs:
   ci:
