@@ -111,12 +111,14 @@ export default async function LocaleLayout({
           <Providers>{children}</Providers>
         </NextIntlClientProvider>
         <Analytics />
-        <Script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="381d4776-b0ac-43c4-a5d2-eacb5d0beb9b"
-          strategy="afterInteractive"
-        />
+        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+          <Script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );
