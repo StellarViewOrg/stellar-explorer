@@ -28,10 +28,7 @@ import { NextRequest } from "next/server";
  * @param params - Query-string parameters to include.
  * @param ip     - Value for the x-forwarded-for header (defaults to "1.2.3.4").
  */
-function makeTomlRequest(
-  params: Record<string, string>,
-  ip = "1.2.3.4"
-): NextRequest {
+function makeTomlRequest(params: Record<string, string>, ip = "1.2.3.4"): NextRequest {
   const url = new URL("http://localhost/api/toml");
   for (const [key, value] of Object.entries(params)) {
     url.searchParams.set(key, value);
@@ -104,10 +101,7 @@ function stubFetchSuccess(body: string): void {
  * Stub `globalThis.fetch` to return an HTTP error response.
  */
 function stubFetchError(status: number): void {
-  vi.stubGlobal(
-    "fetch",
-    vi.fn().mockResolvedValue(new Response("", { status }))
-  );
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("", { status })));
 }
 
 /**

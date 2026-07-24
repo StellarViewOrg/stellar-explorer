@@ -28,10 +28,7 @@ import { NextRequest } from "next/server";
  * @param path - The `path` query-string value (or omitted to test missing).
  * @param ip   - Value for the x-forwarded-for header (defaults to "1.2.3.4").
  */
-function makeStellarExpertRequest(
-  path: string | null,
-  ip = "1.2.3.4"
-): NextRequest {
+function makeStellarExpertRequest(path: string | null, ip = "1.2.3.4"): NextRequest {
   const url = new URL("http://localhost/api/stellar-expert");
   if (path !== null) {
     url.searchParams.set("path", path);
@@ -42,7 +39,8 @@ function makeStellarExpertRequest(
 }
 
 /** A sample valid path that matches the allow-list regex. */
-const VALID_PATH = "explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN";
+const VALID_PATH =
+  "explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN";
 
 /** A valid upstream JSON response body. */
 const UPSTREAM_PAYLOAD = { _links: {}, records: [{ id: 1 }] };
@@ -77,10 +75,7 @@ function stubFetchSuccess(body: unknown = UPSTREAM_PAYLOAD): void {
  * Stub `globalThis.fetch` to return an HTTP error response.
  */
 function stubFetchError(status: number): void {
-  vi.stubGlobal(
-    "fetch",
-    vi.fn().mockResolvedValue(new Response("", { status }))
-  );
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("", { status })));
 }
 
 /**
@@ -172,9 +167,7 @@ describe("GET /api/stellar-expert – path allow-list / SSRF guard", () => {
 
   it("rejects path traversal via '..'", async () => {
     const { GET } = await import("./route");
-    const res = await GET(
-      makeStellarExpertRequest("explorer/public/../../../etc/passwd")
-    );
+    const res = await GET(makeStellarExpertRequest("explorer/public/../../../etc/passwd"));
     expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.error).toMatch(/invalid path/i);
@@ -183,9 +176,7 @@ describe("GET /api/stellar-expert – path allow-list / SSRF guard", () => {
   it("rejects path traversal encoded as URL segments", async () => {
     const { GET } = await import("./route");
     // Even without percent-encoding, a literal ".." embedded in the path is blocked
-    const res = await GET(
-      makeStellarExpertRequest("explorer/public/asset/../../../secret")
-    );
+    const res = await GET(makeStellarExpertRequest("explorer/public/asset/../../../secret"));
     expect(res.status).toBe(400);
   });
 });
@@ -284,9 +275,9 @@ describe("GET /api/stellar-expert – valid request", () => {
   });
 
   it("forwards the request to the correct stellar.expert URL", async () => {
-    const fetchSpy = vi.fn().mockResolvedValue(
-      new Response(JSON.stringify(UPSTREAM_PAYLOAD), { status: 200 })
-    );
+    const fetchSpy = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify(UPSTREAM_PAYLOAD), { status: 200 }));
     vi.stubGlobal("fetch", fetchSpy);
     const { GET } = await import("./route");
 
